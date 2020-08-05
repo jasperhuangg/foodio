@@ -5,8 +5,6 @@ import { connect } from "react-redux";
 import Home from "./Home";
 import Profile from "./Profile";
 
-import HomeScreen from "./Home";
-
 const mapStateToProps = (state) => {
   return {
     userID: state.userID,
@@ -21,14 +19,6 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-function SettingsScreen() {
-  return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text>Settings!</Text>
-    </View>
-  );
-}
-
 const Tab = createBottomTabNavigator();
 
 function Main(props) {
@@ -38,7 +28,7 @@ function Main(props) {
   return (
     <Tab.Navigator>
       <Tab.Screen name="Home" component={Home} />
-      <Tab.Screen name="Settings" component={Profile} />
+      <Tab.Screen name="Profile" component={Profile} />
     </Tab.Navigator>
   );
 }
