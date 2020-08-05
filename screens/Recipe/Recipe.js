@@ -55,7 +55,6 @@ function Recipe(props) {
     });
 
     return () => {
-      alert("unmounting");
       setTabsShowing(true);
     };
   }, []);

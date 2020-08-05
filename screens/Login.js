@@ -53,7 +53,7 @@ function Login(props) {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.innerContainer}>
-        <TouchableOpacity onPress={() => handleAuth()}>
+        <View>
           <Text style={styles.header}>Sign In</Text>
           <TextInput
             autoFocus={true}
@@ -64,6 +64,7 @@ function Login(props) {
             onChangeText={(username) => setUsername(username)}
           />
           <TouchableOpacity
+            onPress={() => handleAuth()}
             style={[
               styles.button,
               isAuthenticating || username === "" ? styles.disabledButton : {},
@@ -79,7 +80,7 @@ function Login(props) {
               <Text style={styles.buttonText}>SIGN IN</Text>
             )}
           </TouchableOpacity>
-        </TouchableOpacity>
+        </View>
       </View>
     </SafeAreaView>
   );
@@ -112,6 +113,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 7,
     marginBottom: 40,
+    borderColor: "grey",
   },
   button: {
     backgroundColor: "orange",

@@ -15,7 +15,7 @@ export default (props) => {
 
 const styles = StyleSheet.create({
   container: {
-    width: "100%",
+    width: window.width,
     height: "100%",
     borderWidth: 1,
   },

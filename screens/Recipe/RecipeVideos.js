@@ -69,10 +69,10 @@ function RecipeVideos(props) {
         <ScrollView
           pagingEnabled
           horizontal
-          // showsHorizontalScrollIndicator={true}
+          showsHorizontalScrollIndicator={true}
           scrollEventThrottle={200}
           decelerationRate="fast"
-          contentContainerStyle={styles.carousel}
+          contentContainerStyle={{ width: `${100 * recipe.steps.length}%` }}
         >
           {recipe.steps.map((step, index) => {
             console.log(index);
