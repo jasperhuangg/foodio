@@ -1,11 +1,11 @@
 import React from 'react';
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, SafeAreaView } from "react-native";
 
 export default (props) => {
-  return (<View style = {
+  return (<SafeAreaView style = {
     {
       flex: 1, justifyContent: 'center', alignItems: 'center'
     }
   }><Text>Create!</Text>
-      </View>);
+      </SafeAreaView>);
 }

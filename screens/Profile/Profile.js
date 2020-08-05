@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, SafeAreaView } from "react-native";
 import * as firebase from "firebase";
 import { connect } from "react-redux";
 
@@ -42,7 +42,7 @@ class Profile extends Component {
 
   render() {
     return (
-      <View
+      <SafeAreaView
         style={{
           flex: 1,
           justifyContent: "center",
@@ -50,7 +50,7 @@ class Profile extends Component {
         }}
       >
         <Text>{this.state.username}</Text>
-      </View>
+      </SafeAreaView>
     );
   }
 }
