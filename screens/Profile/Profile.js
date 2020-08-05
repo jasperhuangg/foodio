@@ -1,6 +1,6 @@
 import * as firebase from 'firebase';
 import React, { Component } from 'react';
-import { SafeAreaView, StyleSheet, Text } from 'react-native';
+import { Button, SafeAreaView, StyleSheet, Text } from 'react-native';
 import { connect } from 'react-redux';
 
 const mapStateToProps = (state) => {
@@ -23,8 +23,8 @@ class Profile extends Component {
     this.state = {
       followers: [],
       following: [],
-      username: props.userID,
       posts: [],
+      username: props.userID,
     };
   }
 
@@ -49,10 +49,14 @@ class Profile extends Component {
       >
         <Text>{this.state.username}</Text>
 
-        <React.Fragment><ul className='list-group'>{this.state.posts.map(
+        <React.Fragment><ul>{this.state.posts.map(
           listitem =>
             (
-            <li className='list-group-item list-group-item-primary'>Elem {listitem}</li>
+              <Button
+                onPress={() => { console.log(listitem); }}
+                title="View Recipe"
+                color="#841584">
+              </Button>
             ))}
         </ul>
         </React.Fragment>
