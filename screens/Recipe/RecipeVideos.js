@@ -43,9 +43,9 @@ function RecipeVideos(props) {
   const [currentStep, setCurrentStep] = useState(props.viewingRecipeStep);
   const [recipe, setRecipe] = useState({});
   const [loaded, setLoaded] = useState(false);
+
   useEffect(() => {
     // get the current recipe from firestore
-
     const ref = firebase
       .firestore()
       .collection("recipes")
@@ -101,7 +101,7 @@ function RecipeVideos(props) {
 const styles = StyleSheet.create({
   carousel: {
     width: window.width,
-    height: window.height,
+    // height: window.height,
   },
 });
 

@@ -6,6 +6,9 @@ import Home from "./Home";
 import Create from "./Create";
 import ProfileStack from "./Profile/ProfileStack";
 import { setTabsShowing, setUserID } from "../util/app-redux";
+import { Entypo } from "@expo/vector-icons";
+import { AntDesign } from "@expo/vector-icons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 const mapStateToProps = (state) => {
   return {
@@ -34,8 +37,32 @@ function Main(props) {
     };
   }, []);
 
+  const renderHomeIcon = (focused, color, size) => {
+    return <Entypo name="home" size={size} color={color} />;
+  };
+
+  function renderCreateIcon(focused, color, size) {
+    return <AntDesign name="plussquareo" size={size} color={color} />;
+  }
+
+  function renderProfileIcon(focused, color, size) {
+    return <MaterialCommunityIcons name="chef-hat" size={size} color={color} />;
+  }
+
   return (
-    <Tab.Navigator>
+    <Tab.Navigator
+      tabBarOptions={{ activeTintColor: "orange", allowFontScaling: true }}
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ focused, color, size }) => {
+          if (route.name === "Home")
+            return renderHomeIcon(focused, color, size);
+          if (route.name === "Create")
+            return renderCreateIcon(focused, color, size);
+          if (route.name === "Profile")
+            return renderProfileIcon(focused, color, size);
+        },
+      })}
+    >
       <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="Create" component={Create} />
       <Tab.Screen

@@ -6,6 +6,8 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
+  Dimensions,
+  ActivityIndicator,
 } from "react-native";
 import { connect } from "react-redux";
 import {
@@ -14,6 +16,8 @@ import {
   setViewingRecipeStep,
   setTabsShowing,
 } from "../../util/app-redux";
+
+const window = Dimensions.get("window");
 
 const mapStateToProps = (state) => {
   return {
@@ -48,6 +52,7 @@ class Profile extends Component {
       following: [],
       posts: [],
       username: props.userID,
+      loaded: false,
     };
   }
 
@@ -73,37 +78,53 @@ class Profile extends Component {
       followers: userDocument.get("followers"),
       following: userDocument.get("following"),
       posts: userPosts,
+      loaded: true,
     });
   }
 
   render() {
-    return (
-      <SafeAreaView
-        style={{
-          flex: 1,
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <Text>{this.state.username}</Text>
+    if (this.state.loaded)
+      return (
+        <SafeAreaView
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Text>{this.state.username}</Text>
 
-        <React.Fragment>
-          {this.state.posts.map((post) => (
-            <Button
-              onPress={() => {
-                this.props.setViewingRecipe(post.recipeID);
-                this.props.setViewingRecipeStep(1);
-                this.props.navigation.navigate("Recipe");
-                this.props.setTabsShowing(false);
-              }}
-              key={post.recipeID}
-              title={"View Recipe " + post.recipeID}
-              color="#841584"
-            ></Button>
-          ))}
-        </React.Fragment>
-      </SafeAreaView>
-    );
+          <React.Fragment>
+            {this.state.posts.map((post) => (
+              <Button
+                onPress={() => {
+                  this.props.setViewingRecipe(post.recipeID);
+                  this.props.setViewingRecipeStep(1);
+                  this.props.navigation.navigate("Recipe");
+                  this.props.setTabsShowing(false);
+                }}
+                key={post.recipeID}
+                title={"View Recipe " + post.recipeID}
+                color="#841584"
+              ></Button>
+            ))}
+          </React.Fragment>
+        </SafeAreaView>
+      );
+    else
+      return (
+        <SafeAreaView
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            width: window.width,
+            height: window.height - 120,
+          }}
+        >
+          <ActivityIndicator size="small" color="grey" />
+        </SafeAreaView>
+      );
   }
 }
 

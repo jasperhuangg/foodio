@@ -34,5 +34,6 @@ const styles = StyleSheet.create({
   text: {
     fontWeight: "900",
     fontSize: 40,
+    color: "orange",
   },
 });

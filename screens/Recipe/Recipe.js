@@ -14,6 +14,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 
 import RecipeStep from "../../components/RecipeStep";
+import { setTabsShowing } from "../../util/app-redux";
 
 const mapStateToProps = (state) => {
   return {
@@ -30,6 +31,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     setViewingRecipeStep: (stepNum) => {
       dispatch(setViewingRecipe(stepNum));
+    },
+    setTabsShowing: (displaying) => {
+      dispatch(setTabsShowing(displaying));
     },
   };
 };
@@ -49,6 +53,11 @@ function Recipe(props) {
       setRecipe(document.data());
       setLoaded(true);
     });
+
+    return () => {
+      alert("unmounting");
+      setTabsShowing(true);
+    };
   }, []);
 
   if (loaded)
