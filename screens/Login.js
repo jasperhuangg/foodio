@@ -7,6 +7,8 @@ import {
   Dimensions,
   TouchableOpacity,
   TextInput,
+  ActivityIndicator,
+  DrawerLayoutAndroidComponent,
 } from "react-native";
 import * as firebase from "firebase";
 import * as Google from "expo-google-app-auth";
@@ -31,22 +33,21 @@ const mapDispatchToProps = (dispatch) => {
 
 function Login(props) {
   const [username, setUsername] = useState("");
+  const [isAuthenticating, setIsAuthenticating] = useState(false);
 
   useEffect(() => {}, []);
 
   function handleAuth() {
+    setIsAuthenticating(true);
     props.setUserID(username);
     firebase
       .auth()
       .signInAnonymously()
-      .then((credential) => {
+      .then(() => {
         props.navigation.replace("Main");
       })
       .catch(function (error) {
-        // Handle Errors here.
-        var errorCode = error.code;
-        var errorMessage = error.message;
-        // ...
+        alert(error);
       });
   }
 
@@ -63,8 +64,21 @@ function Login(props) {
             placeholder="Username"
             onChangeText={(username) => setUsername(username)}
           />
-          <TouchableOpacity style={styles.button} onPress={() => handleAuth()}>
-            <Text style={styles.buttonText}>Sign In</Text>
+          <TouchableOpacity
+            style={[
+              styles.button,
+              isAuthenticating ? styles.disabledButton : {},
+            ]}
+            disabled={isAuthenticating}
+            onPress={() => {
+              if (!isAuthenticating) handleAuth();
+            }}
+          >
+            {isAuthenticating ? (
+              <ActivityIndicator size="small" color="black" />
+            ) : (
+              <Text style={styles.buttonText}>SIGN IN</Text>
+            )}
           </TouchableOpacity>
         </TouchableOpacity>
       </View>
@@ -109,8 +123,13 @@ const styles = StyleSheet.create({
     width: 0.7 * window.width,
     borderRadius: 7,
   },
+  disabledButton: {
+    opacity: 0.4,
+  },
   buttonText: {
     fontSize: 16,
+    fontWeight: "700",
+    letterSpacing: 3,
   },
 });
 

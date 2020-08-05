@@ -55,7 +55,9 @@ class Profile extends Component {
     return (
       <SafeAreaView
         style={{
-          flex: 1, justifyContent: 'center', alignItems: 'center',
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
         }}
       >
         <Text>{this.state.username}</Text>
@@ -68,7 +70,7 @@ class Profile extends Component {
                   // TODO: Set recipe id before navigating
                   props.navigation.replace("Recipe")
                 }}
-                title="View Recipe"
+                title={"View Recipe " + listitem.recipeID}
                 color="#841584">
               </Button>
             ))}
