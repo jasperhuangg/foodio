@@ -1,29 +1,44 @@
 import React, { useEffect } from "react";
-import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { NavigationContainer } from "@react-navigation/native";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { connect } from "react-redux";
+
 import HomeScreen from "./Home";
 
+const mapStateToProps = (state) => {
+  return {
+    userID: state.userID,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setUserID: (userID) => {
+      dispatch(setUserID(userID));
+    },
+  };
+};
 
 function SettingsScreen() {
-    return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>Settings!</Text>
-      </View>
-    );
-  }
-  
-  
+  return (
+    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <Text>Settings!</Text>
+    </View>
+  );
+}
 
 const Tab = createBottomTabNavigator();
 
-export default function Main() {
+function Main(props) {
+  useEffect(() => {
+    alert(props.userID);
+  }, []);
   return (
-      <NavigationContainer><Tab.Navigator>
-      <Tab.Screen name = 'Home' component =
-       {
-         HomeScreen
-       } />
-        <Tab.Screen name="Settings" component={SettingsScreen} />
-      </Tab.Navigator>
-    </NavigationContainer>);
+    <Tab.Navigator>
+      <Tab.Screen name="Home" component={HomeScreen} />
+      <Tab.Screen name="Settings" component={SettingsScreen} />
+    </Tab.Navigator>
+  );
 }
+
+export default connect(mapStateToProps, mapDispatchToProps)(Main);
