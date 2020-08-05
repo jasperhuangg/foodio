@@ -8,10 +8,12 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { connect } from "react-redux";
+import { setViewingRecipe, setUserID } from "../../util/app-redux";
 
 const mapStateToProps = (state) => {
   return {
     userID: state.userID,
+    viewingRecipe: state.viewingRecipe,
   };
 };
 
@@ -19,6 +21,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     setUserID: (userID) => {
       dispatch(setUserID(userID));
+    },
+    setViewingRecipe: (recipeID) => {
+      dispatch(setViewingRecipe(recipeID));
     },
   };
 };
@@ -41,6 +46,7 @@ class Profile extends Component {
     const posts = firestore.collection("posts");
     var userPosts = [];
     // Horribly inefficient, but did not find a method that returns multiple docs at once
+
     for (const postId of userDocument.get("posts")) {
       const post = await posts.doc(postId).get();
       userPosts.push({
@@ -69,13 +75,13 @@ class Profile extends Component {
         <Text>{this.state.username}</Text>
 
         <React.Fragment>
-          {this.state.posts.map((listitem) => (
+          {this.state.posts.map((post) => (
             <Button
               onPress={() => {
-                // TODO: Set recipe id before navigating
-                props.navigation.navigate("Recipe");
+                props.setViewingRecipe(post.recipeID);
+                props.navigation.replace("Recipe");
               }}
-              title={"View Recipe " + listitem.recipeID}
+              title={"View Recipe " + post.recipeID}
               color="#841584"
             ></Button>
           ))}
