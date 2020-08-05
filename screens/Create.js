@@ -6,6 +6,6 @@ export default (props) => {
     {
       flex: 1, justifyContent: 'center', alignItems: 'center'
     }
-  }><Text>Home!</Text>
+  }><Text>Create!</Text>
       </SafeAreaView>);
 }

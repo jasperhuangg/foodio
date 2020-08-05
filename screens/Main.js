@@ -3,6 +3,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { connect } from "react-redux";
 import Home from "./Home";
+import Create from "./Create";
 import ProfileStack from "./Profile/ProfileStack";
 
 const mapStateToProps = (state) => {
@@ -26,6 +27,7 @@ function Main(props) {
     <Tab.Navigator>
       <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="Profile" component={ProfileStack} />
+      <Tab.Screen name="Create" component={Create} />
     </Tab.Navigator>
   );
 }

@@ -1,5 +1,12 @@
 import React, { Component } from "react";
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import {
+  Text,
+  View,
+  TouchableOpacity,
+  Button,
+  SafeAreaView,
+  StyleSheet,
+} from "react-native";
 import * as firebase from "firebase";
 import { connect } from "react-redux";
 
@@ -24,6 +31,7 @@ class Profile extends Component {
       followers: [],
       following: [],
       username: props.userID,
+      posts: [],
     };
   }
 
@@ -31,18 +39,17 @@ class Profile extends Component {
     const ref = firebase.firestore().collection("users").doc("admin").get();
 
     ref.then((document) => {
-      console.log(document);
-
       this.setState({
         followers: document.get("followers"),
         following: document.get("following"),
+        posts: document.get("posts"),
       });
     });
   }
 
   render() {
     return (
-      <View
+      <SafeAreaView
         style={{
           flex: 1,
           justifyContent: "center",
@@ -50,12 +57,22 @@ class Profile extends Component {
         }}
       >
         <Text>{this.state.username}</Text>
-        <TouchableOpacity
-          onPress={() => this.props.navigation.navigate("Recipe")}
-        >
-          <Text>View Recipe</Text>
-        </TouchableOpacity>
-      </View>
+
+        <React.Fragment>
+          <ul className="list-group">
+            {this.state.posts.map((listitem) => (
+              <Button className="list-group-item list-group-item-primary">
+                Elem {listitem}
+              </Button>
+            ))}
+          </ul>
+          <TouchableOpacity
+            onPress={() => this.props.navigation.navigate("Recipe")}
+          >
+            <Text>View Recipe</Text>
+          </TouchableOpacity>
+        </React.Fragment>
+      </SafeAreaView>
     );
   }
 }
