@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { connect } from "react-redux";
@@ -22,9 +22,6 @@ const mapDispatchToProps = (dispatch) => {
 const Tab = createBottomTabNavigator();
 
 function Main(props) {
-  useEffect(() => {
-    alert(props.userID);
-  }, []);
   return (
     <Tab.Navigator>
       <Tab.Screen name="Home" component={Home} />

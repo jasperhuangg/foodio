@@ -55,7 +55,7 @@ function Login(props) {
     <SafeAreaView style={styles.container}>
       <View style={styles.innerContainer}>
         <TouchableOpacity onPress={() => handleAuth()}>
-          <Text style={styles.header}>Welcome{"\n"} Chef</Text>
+          <Text style={styles.header}>Sign In</Text>
           <TextInput
             autoFocus={true}
             autoCapitalize="none"
@@ -65,9 +65,14 @@ function Login(props) {
             onChangeText={(username) => setUsername(username)}
           />
           <TouchableOpacity
-            style={styles.button}
+            style={[
+              styles.button,
+              isAuthenticating ? styles.disabledButton : {},
+            ]}
             disabled={isAuthenticating}
-            onPress={() => handleAuth()}
+            onPress={() => {
+              if (!isAuthenticating) handleAuth();
+            }}
           >
             {isAuthenticating ? (
               <ActivityIndicator size="small" color="black" />
@@ -117,6 +122,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: 0.7 * window.width,
     borderRadius: 7,
+  },
+  disabledButton: {
+    opacity: 0.4,
   },
   buttonText: {
     fontSize: 16,

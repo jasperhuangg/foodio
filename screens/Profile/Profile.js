@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import * as firebase from "firebase";
 import { connect } from "react-redux";
 
@@ -50,6 +50,11 @@ class Profile extends Component {
         }}
       >
         <Text>{this.state.username}</Text>
+        <TouchableOpacity
+          onPress={() => this.props.navigation.navigate("Recipe")}
+        >
+          <Text>View Recipe</Text>
+        </TouchableOpacity>
       </View>
     );
   }
