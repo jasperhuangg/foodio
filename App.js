@@ -1,30 +1,45 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect } from "react";
 import { StyleSheet, Text, View } from "react-native";
-import * as firebase from "firebase";
+import { NavigationContainer, Platform } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import { TransitionPresets } from "@react-navigation/stack";
 
-import config from "./constants/config";
+import Splash from "./screens/Splash";
+import Login from "./screens/Login";
+
+const Stack = createStackNavigator();
 
 export default function App() {
-  useEffect(() => {
-    testFirebase();
-  }, []);
-
-  function testFirebase() {
-    firebase.initializeApp(config.firebaseConfig);
-    const ref = firebase.firestore().collection("users");
-    ref.get().then((snapshot) => {
-      snapshot.docs.forEach((doc) => {
-        console.log(doc.data());
-      });
-    });
-  }
+  useEffect(() => {}, []);
 
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator
+        initialRouteName="Splash"
+        screenOptions={{
+          headerShown: false,
+          cardStyleInterpolator: ({ current: { progress } }) => ({
+            cardStyle: {
+              opacity: progress.interpolate({
+                inputRange: [0, 0.5, 0.9, 1],
+                outputRange: [0, 0.25, 0.7, 1],
+              }),
+            },
+            overlayStyle: {
+              opacity: progress.interpolate({
+                inputRange: [0, 1],
+                outputRange: [0, 0.5],
+                extrapolate: "clamp",
+              }),
+            },
+          }),
+        }}
+      >
+        <Stack.Screen name="Splash" component={Splash} />
+        <Stack.Screen name="Login" component={Login} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
