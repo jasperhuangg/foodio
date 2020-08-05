@@ -28,15 +28,26 @@ class Profile extends Component {
     };
   }
 
-  componentDidMount() {
-    const ref = firebase.firestore().collection('users').doc('admin').get();
+  async componentDidMount() {
+    const firestore = firebase.firestore();
+    const userDocument = await firestore.collection('users').doc('admin').get();
 
-    ref.then((document) => {
-      this.setState({
-        followers: document.get('followers'),
-        following: document.get('following'),
-        posts: document.get('posts'),
+    const posts = firestore.collection('posts');
+    var userPosts = [];
+    // Horribly inefficient, but did not find a method that returns multiple docs at once
+    for (const postId of userDocument.get('posts')) {
+      const post = await posts.doc(postId).get();
+      userPosts.push({
+        comments: post.get("comments"),
+        likes: post.get("likes"),
+        recipeID: post.get("recipeID"),
       });
+    }
+
+    this.setState({
+      followers: userDocument.get('followers'),
+      following: userDocument.get('following'),
+      posts: userPosts,
     });
   }
 
@@ -53,7 +64,10 @@ class Profile extends Component {
           listitem =>
             (
               <Button
-                onPress={() => { console.log(listitem); }}
+                onPress={() => {
+                  // TODO: Set recipe id before navigating
+                  props.navigation.replace("Recipe")
+                }}
                 title="View Recipe"
                 color="#841584">
               </Button>
