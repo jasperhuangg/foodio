@@ -1,7 +1,7 @@
-import React, { Component } from "react";
-import { StyleSheet, Text, SafeAreaView } from "react-native";
-import * as firebase from "firebase";
-import { connect } from "react-redux";
+import * as firebase from 'firebase';
+import React, { Component } from 'react';
+import { SafeAreaView, StyleSheet, Text } from 'react-native';
+import { connect } from 'react-redux';
 
 const mapStateToProps = (state) => {
   return {
@@ -24,18 +24,18 @@ class Profile extends Component {
       followers: [],
       following: [],
       username: props.userID,
+      posts: [],
     };
   }
 
   componentDidMount() {
-    const ref = firebase.firestore().collection("users").doc("admin").get();
+    const ref = firebase.firestore().collection('users').doc('admin').get();
 
     ref.then((document) => {
-      console.log(document);
-
       this.setState({
-        followers: document.get("followers"),
-        following: document.get("following"),
+        followers: document.get('followers'),
+        following: document.get('following'),
+        posts: document.get('posts'),
       });
     });
   }
@@ -44,12 +44,19 @@ class Profile extends Component {
     return (
       <SafeAreaView
         style={{
-          flex: 1,
-          justifyContent: "center",
-          alignItems: "center",
+          flex: 1, justifyContent: 'center', alignItems: 'center',
         }}
       >
         <Text>{this.state.username}</Text>
+
+        <React.Fragment><ul className='list-group'>{this.state.posts.map(
+          listitem =>
+            (
+            <li className='list-group-item list-group-item-primary'>Elem {listitem}</li>
+            ))}
+        </ul>
+        </React.Fragment>
+
       </SafeAreaView>
     );
   }
