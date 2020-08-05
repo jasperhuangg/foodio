@@ -40,7 +40,7 @@ function Login(props) {
       .auth()
       .signInAnonymously()
       .then((credential) => {
-        props.navigation.navigate("Main");
+        props.navigation.replace("Main");
       })
       .catch(function (error) {
         // Handle Errors here.
