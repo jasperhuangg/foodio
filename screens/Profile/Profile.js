@@ -35,12 +35,12 @@ class Profile extends Component {
 
   async componentDidMount() {
     const firestore = firebase.firestore();
-    const userDocument = await firestore.collection('users').doc('admin').get();
+    const userDocument = await firestore.collection("users").doc("admin").get();
 
-    const posts = firestore.collection('posts');
+    const posts = firestore.collection("posts");
     var userPosts = [];
     // Horribly inefficient, but did not find a method that returns multiple docs at once
-    for (const postId of userDocument.get('posts')) {
+    for (const postId of userDocument.get("posts")) {
       const post = await posts.doc(postId).get();
       userPosts.push({
         comments: post.get("comments"),
@@ -50,8 +50,8 @@ class Profile extends Component {
     }
 
     this.setState({
-      followers: userDocument.get('followers'),
-      following: userDocument.get('following'),
+      followers: userDocument.get("followers"),
+      following: userDocument.get("following"),
       posts: userPosts,
     });
   }
@@ -80,7 +80,6 @@ class Profile extends Component {
               </Button>
             ))}
         </React.Fragment>
-
       </SafeAreaView>
     );
   }

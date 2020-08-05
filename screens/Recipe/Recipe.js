@@ -56,7 +56,12 @@ export default (props) => {
             recipe description (from the post). bla bla bla, bla bla bla, bla
             bla bla,bla bla bla,bla bla bla,bla bla bla,bla bla bla,bla bla bla,
             bla bla bla,bla bla bla, bla bla bla,bla bla bla, bla bla bla, bla
-            bla bla, bla bla bla, bla bla bla, bla bla bla,
+            bla bla, bla bla bla, bla bla bla, bla bla bla, bla bla bla, bla bla
+            bla, bla bla bla,bla bla bla,bla bla bla,bla bla bla,bla bla bla,bla
+            bla bla, bla bla bla,bla bla bla, bla bla bla,bla bla bla, bla bla
+            bla, bla bla bla, bla bla bla, bla bla bla, bla bla bla, bla bla
+            bla, bla bla bla, bla bla bla,bla bla bla,bla bla bla,bla bla
+            bla,bla bla bla,bla bla bla,
           </Text>
         </View>
         <View
@@ -155,6 +160,6 @@ const styles = StyleSheet.create({
     paddingBottom: 12,
   },
   lineHeight: {
-    lineHeight: 20,
+    lineHeight: 24,
   },
 });
