@@ -2,10 +2,12 @@ import * as firebase from 'firebase';
 import React, { Component } from 'react';
 import { Button, SafeAreaView, StyleSheet, Text } from 'react-native';
 import { connect } from 'react-redux';
+import { setViewingRecipe, setUserID } from '../../util/app-redux'
 
 const mapStateToProps = (state) => {
   return {
     userID: state.userID,
+    viewingRecipe: state.viewingRecipe,
   };
 };
 
@@ -14,6 +16,9 @@ const mapDispatchToProps = (dispatch) => {
     setUserID: (userID) => {
       dispatch(setUserID(userID));
     },
+    setViewingRecipe: (recipeID) => {
+      dispatch(setViewingRecipe(recipeID));
+    }
   };
 };
 
@@ -62,19 +67,18 @@ class Profile extends Component {
       >
         <Text>{this.state.username}</Text>
 
-        <React.Fragment><ul>{this.state.posts.map(
-          listitem =>
+        <React.Fragment>{this.state.posts.map(
+          post =>
             (
               <Button
                 onPress={() => {
-                  // TODO: Set recipe id before navigating
+                  setViewingRecipe(post.recipeID);
                   props.navigation.replace("Recipe")
                 }}
-                title={"View Recipe " + listitem.recipeID}
+                title={"View Recipe " + post.recipeID}
                 color="#841584">
               </Button>
             ))}
-        </ul>
         </React.Fragment>
 
       </SafeAreaView>
