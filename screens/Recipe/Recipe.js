@@ -55,7 +55,7 @@ function Recipe(props) {
     });
 
     return () => {
-      setTabsShowing(true);
+      props.setTabsShowing(true);
     };
   }, []);
 

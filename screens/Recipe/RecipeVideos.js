@@ -4,6 +4,7 @@ import {
   Text,
   Dimensions,
   StyleSheet,
+  TouchableOpacity,
   ScrollView,
   ActivityIndicator,
 } from "react-native";
@@ -14,6 +15,7 @@ import {
   setViewingRecipe,
   setViewingRecipeStep,
 } from "../../util/app-redux";
+// import ScrollViewOffset from "react-native-scrollview-offset";
 import * as firebase from "firebase";
 
 import RecipeStepVideo from "./RecipeStepVideo";
@@ -67,17 +69,28 @@ function RecipeVideos(props) {
     return (
       <SafeAreaView>
         <ScrollView
+          contentOffset={{
+            x: (props.viewingRecipeStep - 1) * window.width,
+            y: 0,
+          }}
           pagingEnabled
           horizontal
           showsHorizontalScrollIndicator={true}
           scrollEventThrottle={200}
           decelerationRate="fast"
-          contentContainerStyle={{ width: `${100 * recipe.steps.length}%` }}
+          contentContainerStyle={{
+            width: `${100 * recipe.steps.length}%`,
+          }}
         >
           {recipe.steps.map((step, index) => {
             console.log(index);
             return (
-              <RecipeStepVideo key={index} step={step} stepNum={index + 1} />
+              <RecipeStepVideo
+                navigation={props.navigation}
+                key={index}
+                step={step}
+                stepNum={index + 1}
+              />
             );
           })}
         </ScrollView>

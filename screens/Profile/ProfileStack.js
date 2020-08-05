@@ -25,12 +25,13 @@ const mapDispatchToProps = (dispatch) => {
 
 function ProfileStack(props) {
   return (
-    <Stack.Navigator lazy initialRouteName="Profile" screenOptions={{}}>
+    <Stack.Navigator initialRouteName="Profile" screenOptions={{}}>
       <Stack.Screen
         name="Profile"
         component={Profile}
         options={{
           title: props.userID,
+          headerTintColor: "orange",
         }}
       />
       <Stack.Screen
@@ -38,6 +39,7 @@ function ProfileStack(props) {
         component={Recipe}
         options={{
           title: "",
+          headerTintColor: "orange",
         }}
       />
       <Stack.Screen
@@ -45,6 +47,7 @@ function ProfileStack(props) {
         component={RecipeVideos}
         options={{
           title: "",
+          headerTintColor: "orange",
           headerShown: false,
         }}
       />
