@@ -66,11 +66,11 @@ function Login(props) {
           <TouchableOpacity
             style={[
               styles.button,
-              isAuthenticating ? styles.disabledButton : {},
+              isAuthenticating || username === "" ? styles.disabledButton : {},
             ]}
-            disabled={isAuthenticating}
+            disabled={isAuthenticating || username === ""}
             onPress={() => {
-              if (!isAuthenticating) handleAuth();
+              if (!isAuthenticating && username !== "") handleAuth();
             }}
           >
             {isAuthenticating ? (

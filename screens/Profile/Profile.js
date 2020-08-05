@@ -8,12 +8,18 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { connect } from "react-redux";
-import { setViewingRecipe, setUserID } from "../../util/app-redux";
+import {
+  setViewingRecipe,
+  setUserID,
+  setViewingRecipeStep,
+  setTabsShowing,
+} from "../../util/app-redux";
 
 const mapStateToProps = (state) => {
   return {
     userID: state.userID,
     viewingRecipe: state.viewingRecipe,
+    viewingRecipeStep: state.viewingRecipeStep,
   };
 };
 
@@ -24,6 +30,12 @@ const mapDispatchToProps = (dispatch) => {
     },
     setViewingRecipe: (recipeID) => {
       dispatch(setViewingRecipe(recipeID));
+    },
+    setViewingRecipeStep: (stepNum) => {
+      dispatch(setViewingRecipeStep(stepNum));
+    },
+    setTabsShowing: (showing) => {
+      dispatch(setTabsShowing(showing));
     },
   };
 };
@@ -49,6 +61,7 @@ class Profile extends Component {
 
     for (const postId of userDocument.get("posts")) {
       const post = await posts.doc(postId).get();
+
       userPosts.push({
         comments: post.get("comments"),
         likes: post.get("likes"),
@@ -79,8 +92,11 @@ class Profile extends Component {
             <Button
               onPress={() => {
                 this.props.setViewingRecipe(post.recipeID);
+                this.props.setViewingRecipeStep(1);
                 this.props.navigation.navigate("Recipe");
+                this.props.setTabsShowing(false);
               }}
+              key={post.recipeID}
               title={"View Recipe " + post.recipeID}
               color="#841584"
             ></Button>

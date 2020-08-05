@@ -46,6 +46,7 @@ function RecipeStep(props) {
         style={[styles.headerContainer, { paddingBottom: 20 }]}
         onPress={() => {
           props.setViewingRecipeStep(props.stepNum);
+
           props.navigation.navigate("RecipeVideos");
         }}
       >

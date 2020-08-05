@@ -5,6 +5,7 @@ const initialState = {
   userID: "",
   viewingRecipe: "",
   viewingRecipeStep: 1,
+  tabsShowing: true,
 };
 
 const reducer = (state = initialState, action) => {
@@ -15,6 +16,8 @@ const reducer = (state = initialState, action) => {
       return { ...state, viewingRecipe: action.value };
     case "setViewingRecipeStep":
       return { ...state, viewingRecipeStep: action.value };
+    case "setTabsShowing":
+      return { ...state, tabsShowing: action.value };
     default:
       return state;
   }
@@ -50,3 +53,12 @@ const setViewingRecipeStep = (stepNum) => {
 };
 
 export { setViewingRecipeStep };
+
+const setTabsShowing = (isShowing) => {
+  return {
+    type: "setTabsShowing",
+    value: isShowing,
+  };
+};
+
+export { setTabsShowing };
