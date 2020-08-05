@@ -102,6 +102,7 @@ export default (props) => {
             console.log(step);
             return (
               <RecipeStep
+                navigation={props.navigation}
                 step={step}
                 key={index}
                 styles={styles}

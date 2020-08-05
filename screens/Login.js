@@ -11,7 +11,6 @@ import {
   DrawerLayoutAndroidComponent,
 } from "react-native";
 import * as firebase from "firebase";
-import * as Google from "expo-google-app-auth";
 import { connect } from "react-redux";
 import { setUserID } from "../util/app-redux";
 

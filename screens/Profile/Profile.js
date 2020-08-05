@@ -1,6 +1,12 @@
 import * as firebase from "firebase";
 import React, { Component } from "react";
-import { Button, SafeAreaView, StyleSheet, Text } from "react-native";
+import {
+  Button,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+} from "react-native";
 import { connect } from "react-redux";
 
 const mapStateToProps = (state) => {
@@ -67,13 +73,22 @@ class Profile extends Component {
             <Button
               onPress={() => {
                 // TODO: Set recipe id before navigating
-                props.navigation.replace("Recipe");
+                props.navigation.navigate("Recipe");
               }}
               title={"View Recipe " + listitem.recipeID}
               color="#841584"
             ></Button>
           ))}
         </React.Fragment>
+
+        {/**
+         * will be removed
+         */}
+        <TouchableOpacity
+          onPress={() => this.props.navigation.navigate("Recipe")}
+        >
+          <Text>View Current Recipe</Text>
+        </TouchableOpacity>
       </SafeAreaView>
     );
   }

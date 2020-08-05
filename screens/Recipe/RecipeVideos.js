@@ -1,12 +1,18 @@
 import React, { useEffect, useState } from "react";
-import {} from "react-native";
+import { SafeAreaView, Text } from "react-native";
+import { connect } from "react-redux";
 import Recipe from "./Recipe";
-import { setUserID, setViewingRecipe } from "../../util/app-redux";
+import {
+  setUserID,
+  setViewingRecipe,
+  setViewingRecipeStep,
+} from "../../util/app-redux";
+import * as firebase from "firebase";
 
 const mapStateToProps = (state) => {
   return {
     userID: state.userID,
-    viewingRecipe: "",
+    viewingRecipe: state.viewingRecipe,
     viewingRecipeStep: 1,
   };
 };
@@ -24,6 +30,25 @@ const mapDispatchToProps = (dispatch) => {
 
 function RecipeVideos(props) {
   const [currentStep, setCurrentStep] = useState(props.viewingRecipeStep);
+
+  useEffect(() => {
+    // get the current recipe from firestore
+    const ref = firebase
+      .firestore()
+      .collection("recipes")
+      .doc(props.viewingRecipe);
+    ref.get().then((document) => {
+      const steps = document.data().steps;
+    });
+
+    return setViewingRecipeStep(currentStep);
+  }, []);
+
+  return (
+    <SafeAreaView>
+      <Text>Videos</Text>
+    </SafeAreaView>
+  );
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(RecipeVideos);

@@ -8,15 +8,46 @@ import {
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
+import { connect } from "react-redux";
+import {
+  setUserID,
+  setViewingRecipe,
+  setViewingRecipeStep,
+} from "../util/app-redux";
 
 const window = Dimensions.get("window");
 
-export default (props) => {
+const mapStateToProps = (state) => {
+  return {
+    userID: state.userID,
+    viewingRecipe: state.viewingRecipe,
+    viewingRecipeStep: state.viewingRecipeStep,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setUserID: (userID) => {
+      dispatch(setUserID(userID));
+    },
+    setViewingRecipe: (recipeID) => {
+      dispatch(setViewingRecipe(recipeID));
+    },
+    setViewingRecipeStep: (stepNum) => {
+      dispatch(setViewingRecipeStep(stepNum));
+    },
+  };
+};
+
+function RecipeStep(props) {
   return (
     <View style={[props.styles.containerPadding, styles.container]}>
       <TouchableOpacity
         style={[styles.headerContainer, { paddingBottom: 20 }]}
-        onPress={() => alert("pressed")}
+        onPress={() => {
+          props.setViewingRecipeStep(props.stepNum);
+          props.navigation.navigate("RecipeVideos");
+        }}
       >
         <View style={styles.image}>
           <Text>Image</Text>
@@ -30,7 +61,7 @@ export default (props) => {
       <Text style={props.styles.lineHeight}>{props.step.description}</Text>
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -66,3 +97,5 @@ const styles = StyleSheet.create({
   },
   stepHeaderButton: {},
 });
+
+export default connect(mapStateToProps, mapDispatchToProps)(RecipeStep);

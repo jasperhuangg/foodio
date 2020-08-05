@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 
 import Profile from "./Profile";
 import Recipe from "../Recipe/Recipe";
+import RecipeVideos from "../Recipe/RecipeVideos";
 
 const Stack = createStackNavigator();
 
@@ -37,6 +38,14 @@ function ProfileStack(props) {
         component={Recipe}
         options={{
           title: "",
+        }}
+      />
+      <Stack.Screen
+        name="RecipeVideos"
+        component={RecipeVideos}
+        options={{
+          title: "",
+          headerShown: false,
         }}
       />
     </Stack.Navigator>
