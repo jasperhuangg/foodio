@@ -40,6 +40,7 @@ class Profile extends Component {
     const posts = firestore.collection("posts");
     var userPosts = [];
     // Horribly inefficient, but did not find a method that returns multiple docs at once
+
     for (const postId of userDocument.get("posts")) {
       const post = await posts.doc(postId).get();
       userPosts.push({
@@ -72,7 +73,7 @@ class Profile extends Component {
             (
               <Button
                 onPress={() => {
-                  setViewingRecipe(post.recipeID);
+                  props.setViewingRecipe(post.recipeID);
                   props.navigation.replace("Recipe")
                 }}
                 title={"View Recipe " + post.recipeID}
