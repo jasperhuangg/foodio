@@ -59,13 +59,10 @@ class Profile extends Component {
         <Text>{this.state.username}</Text>
 
         <React.Fragment>
-          <ul className="list-group">
-            {this.state.posts.map((listitem) => (
-              <Button className="list-group-item list-group-item-primary">
-                Elem {listitem}
-              </Button>
-            ))}
-          </ul>
+          {this.state.posts.map((listitem) => (
+            <Button title={"Elem"} />
+          ))}
+
           <TouchableOpacity
             onPress={() => this.props.navigation.navigate("Recipe")}
           >
