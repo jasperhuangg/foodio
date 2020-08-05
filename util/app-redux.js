@@ -44,7 +44,7 @@ export { setViewingRecipe };
 
 const setViewingRecipeStep = (stepNum) => {
   return {
-    type: "setViewingRecipe",
+    type: "setViewingRecipeStep",
     value: stepNum,
   };
 };

@@ -78,23 +78,14 @@ class Profile extends Component {
           {this.state.posts.map((post) => (
             <Button
               onPress={() => {
-                props.setViewingRecipe(post.recipeID);
-                props.navigation.replace("Recipe");
+                this.props.setViewingRecipe(post.recipeID);
+                this.props.navigation.navigate("Recipe");
               }}
               title={"View Recipe " + post.recipeID}
               color="#841584"
             ></Button>
           ))}
         </React.Fragment>
-
-        {/**
-         * will be removed
-         */}
-        <TouchableOpacity
-          onPress={() => this.props.navigation.navigate("Recipe")}
-        >
-          <Text>View Current Recipe</Text>
-        </TouchableOpacity>
       </SafeAreaView>
     );
   }
