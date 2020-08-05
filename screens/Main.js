@@ -1,10 +1,7 @@
 import React, { useEffect } from "react";
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-
-import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import HomeScreen from "./screens/Home";
+import HomeScreen from "./Home";
 
 
 function SettingsScreen() {
