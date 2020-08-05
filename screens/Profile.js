@@ -1,15 +1,30 @@
-import React, {Component} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import React, { Component } from "react";
+import { StyleSheet, Text, View } from "react-native";
 import * as firebase from "firebase";
+import { connect } from "react-redux";
 
-export default class Profile extends Component {
+const mapStateToProps = (state) => {
+  return {
+    userID: state.userID,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setUserID: (userID) => {
+      dispatch(setUserID(userID));
+    },
+  };
+};
+
+class Profile extends Component {
   constructor(props) {
     super(props);
     this.state = {
       followers: [],
       following: [],
-      username: null,
-    }
+      username: props.userID,
+    };
   }
 
   componentDidMount() {
@@ -18,19 +33,26 @@ export default class Profile extends Component {
     ref.then((document) => {
       console.log(document);
 
-      this.state.followers = document.get("followers");
-      this.state.following = document.get("following");
-      this.state.username = document.get("username");
-
+      this.setState({
+        followers: document.get("followers"),
+        following: document.get("following"),
+      });
     });
   }
 
   render() {
-    return (<View style = {
-      {
-        flex: 1, justifyContent: 'center', alignItems: 'center'
-      }
-    }><Text>{this.state.username}</Text>
-      </View>);
+    return (
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Text>{this.state.username}</Text>
+      </View>
+    );
   }
 }
+
+export default connect(mapStateToProps, mapDispatchToProps)(Profile);
