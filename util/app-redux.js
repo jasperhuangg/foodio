@@ -4,6 +4,7 @@ import thunkMiddleware from "redux-thunk";
 const initialState = {
   userID: "",
   viewingRecipe: "",
+  viewingRecipeStep: 1,
 };
 
 const reducer = (state = initialState, action) => {
@@ -12,6 +13,8 @@ const reducer = (state = initialState, action) => {
       return { ...state, userID: action.value };
     case "setViewingRecipe":
       return { ...state, viewingRecipe: action.value };
+    case "setViewingRecipeStep":
+      return { ...state, viewingRecipeStep: action.value };
     default:
       return state;
   }
@@ -38,3 +41,12 @@ const setViewingRecipe = (viewingRecipe) => {
 };
 
 export { setViewingRecipe };
+
+const setViewingRecipeStep = (stepNum) => {
+  return {
+    type: "setViewingRecipe",
+    value: stepNum,
+  };
+};
+
+export { setViewingRecipeStep };
