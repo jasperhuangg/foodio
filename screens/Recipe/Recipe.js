@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import * as firebase from "firebase";
+import { connect } from "react-redux";
 import {
   SafeAreaView,
   Text,
@@ -13,23 +14,51 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 
 import RecipeStep from "../../components/RecipeStep";
+import { setTabsShowing } from "../../util/app-redux";
+
+const mapStateToProps = (state) => {
+  return {
+    userID: state.userID,
+    viewingRecipe: state.viewingRecipe,
+    viewingRecipeStep: state.viewingRecipeStep,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setUserID: (userID) => {
+      dispatch(setUserID(userID));
+    },
+    setViewingRecipeStep: (stepNum) => {
+      dispatch(setViewingRecipe(stepNum));
+    },
+    setTabsShowing: (displaying) => {
+      dispatch(setTabsShowing(displaying));
+    },
+  };
+};
 
 const window = Dimensions.get("window");
 
-export default (props) => {
+function Recipe(props) {
   const [loaded, setLoaded] = useState(false);
   const [recipe, setRecipe] = useState({});
 
   useEffect(() => {
     // make call to firebase to get recipe info with recipeID
-    const recipeID = "QlcDqAWMBh29rIupv1Tr";
+    const recipeID = props.viewingRecipe;
 
     const ref = firebase.firestore().collection("recipes").doc(recipeID);
     ref.get().then((document) => {
       setRecipe(document.data());
       setLoaded(true);
     });
+
+    return () => {
+      props.setTabsShowing(true);
+    };
   }, []);
+
   if (loaded)
     return (
       <ScrollView contentContainerStyle={styles.container}>
@@ -99,9 +128,9 @@ export default (props) => {
         </View>
         <View>
           {recipe.steps.map((step, index) => {
-            console.log(step);
             return (
               <RecipeStep
+                navigation={props.navigation}
                 step={step}
                 key={index}
                 styles={styles}
@@ -118,7 +147,7 @@ export default (props) => {
         <ActivityIndicator size="small" color="grey" />
       </SafeAreaView>
     );
-};
+}
 
 const styles = StyleSheet.create({
   centeredContainer: {
@@ -163,3 +192,5 @@ const styles = StyleSheet.create({
     lineHeight: 24,
   },
 });
+
+export default connect(mapStateToProps, mapDispatchToProps)(Recipe);

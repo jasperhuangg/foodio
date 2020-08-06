@@ -1,13 +1,29 @@
-import * as firebase from 'firebase';
-import React, { Component } from 'react';
-import { Button, SafeAreaView, StyleSheet, Text } from 'react-native';
-import { connect } from 'react-redux';
-import { setViewingRecipe, setUserID } from '../../util/app-redux'
+import * as firebase from "firebase";
+import React, { Component } from "react";
+import {
+  Button,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  Dimensions,
+  ActivityIndicator,
+} from "react-native";
+import { connect } from "react-redux";
+import {
+  setViewingRecipe,
+  setUserID,
+  setViewingRecipeStep,
+  setTabsShowing,
+} from "../../util/app-redux";
+
+const window = Dimensions.get("window");
 
 const mapStateToProps = (state) => {
   return {
     userID: state.userID,
     viewingRecipe: state.viewingRecipe,
+    viewingRecipeStep: state.viewingRecipeStep,
   };
 };
 
@@ -18,7 +34,13 @@ const mapDispatchToProps = (dispatch) => {
     },
     setViewingRecipe: (recipeID) => {
       dispatch(setViewingRecipe(recipeID));
-    }
+    },
+    setViewingRecipeStep: (stepNum) => {
+      dispatch(setViewingRecipeStep(stepNum));
+    },
+    setTabsShowing: (showing) => {
+      dispatch(setTabsShowing(showing));
+    },
   };
 };
 
@@ -30,6 +52,7 @@ class Profile extends Component {
       following: [],
       posts: [],
       username: props.userID,
+      loaded: false,
     };
   }
 
@@ -43,6 +66,7 @@ class Profile extends Component {
 
     for (const postId of userDocument.get("posts")) {
       const post = await posts.doc(postId).get();
+
       userPosts.push({
         comments: post.get("comments"),
         likes: post.get("likes"),
@@ -54,35 +78,53 @@ class Profile extends Component {
       followers: userDocument.get("followers"),
       following: userDocument.get("following"),
       posts: userPosts,
+      loaded: true,
     });
   }
 
   render() {
-    return (
-      <SafeAreaView
-        style={{
-          flex: 1,
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <Text>{this.state.username}</Text>
+    if (this.state.loaded)
+      return (
+        <SafeAreaView
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Text>{this.state.username}</Text>
 
-        <React.Fragment>{this.state.posts.map(
-          post =>
-            (
+          <React.Fragment>
+            {this.state.posts.map((post) => (
               <Button
                 onPress={() => {
-                  props.setViewingRecipe(post.recipeID);
-                  props.navigation.replace("Recipe")
+                  this.props.setViewingRecipe(post.recipeID);
+                  this.props.setViewingRecipeStep(1);
+                  this.props.navigation.navigate("Recipe");
+                  this.props.setTabsShowing(false);
                 }}
+                key={post.recipeID}
                 title={"View Recipe " + post.recipeID}
-                color="#841584">
-              </Button>
+                color="#841584"
+              ></Button>
             ))}
-        </React.Fragment>
-      </SafeAreaView>
-    );
+          </React.Fragment>
+        </SafeAreaView>
+      );
+    else
+      return (
+        <SafeAreaView
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            width: window.width,
+            height: window.height - 120,
+          }}
+        >
+          <ActivityIndicator size="small" color="grey" />
+        </SafeAreaView>
+      );
   }
 }
 

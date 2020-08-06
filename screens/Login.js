@@ -11,7 +11,6 @@ import {
   DrawerLayoutAndroidComponent,
 } from "react-native";
 import * as firebase from "firebase";
-import * as Google from "expo-google-app-auth";
 import { connect } from "react-redux";
 import { setUserID } from "../util/app-redux";
 
@@ -54,7 +53,7 @@ function Login(props) {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.innerContainer}>
-        <TouchableOpacity onPress={() => handleAuth()}>
+        <View>
           <Text style={styles.header}>Sign In</Text>
           <TextInput
             autoFocus={true}
@@ -65,13 +64,14 @@ function Login(props) {
             onChangeText={(username) => setUsername(username)}
           />
           <TouchableOpacity
+            onPress={() => handleAuth()}
             style={[
               styles.button,
-              isAuthenticating ? styles.disabledButton : {},
+              isAuthenticating || username === "" ? styles.disabledButton : {},
             ]}
-            disabled={isAuthenticating}
+            disabled={isAuthenticating || username === ""}
             onPress={() => {
-              if (!isAuthenticating) handleAuth();
+              if (!isAuthenticating && username !== "") handleAuth();
             }}
           >
             {isAuthenticating ? (
@@ -80,7 +80,7 @@ function Login(props) {
               <Text style={styles.buttonText}>SIGN IN</Text>
             )}
           </TouchableOpacity>
-        </TouchableOpacity>
+        </View>
       </View>
     </SafeAreaView>
   );
@@ -113,6 +113,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 7,
     marginBottom: 40,
+    borderColor: "grey",
   },
   button: {
     backgroundColor: "orange",

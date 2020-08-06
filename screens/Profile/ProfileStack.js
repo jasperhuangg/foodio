@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 
 import Profile from "./Profile";
 import Recipe from "../Recipe/Recipe";
+import RecipeVideos from "../Recipe/RecipeVideos";
 
 const Stack = createStackNavigator();
 
@@ -24,12 +25,13 @@ const mapDispatchToProps = (dispatch) => {
 
 function ProfileStack(props) {
   return (
-    <Stack.Navigator lazy initialRouteName="Profile" screenOptions={{}}>
+    <Stack.Navigator initialRouteName="Profile" screenOptions={{}}>
       <Stack.Screen
         name="Profile"
         component={Profile}
         options={{
           title: props.userID,
+          headerTintColor: "orange",
         }}
       />
       <Stack.Screen
@@ -37,6 +39,16 @@ function ProfileStack(props) {
         component={Recipe}
         options={{
           title: "",
+          headerTintColor: "orange",
+        }}
+      />
+      <Stack.Screen
+        name="RecipeVideos"
+        component={RecipeVideos}
+        options={{
+          title: "",
+          headerTintColor: "orange",
+          headerShown: false,
         }}
       />
     </Stack.Navigator>
