@@ -7,7 +7,8 @@ import Create from "./Create";
 import { setTabsShowing, setUserID } from "../util/app-redux";
 import { AntDesign } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { FontAwesome } from '@expo/vector-icons';
+import { FontAwesome } from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
 
 import ProfileStack from "./Profile/ProfileStack";
 import HomeStack from "./Home/HomeStack";
@@ -40,7 +41,11 @@ function Main(props) {
   }, []);
 
   const renderHomeIcon = (focused, color, size) => {
-    return <MaterialCommunityIcons name="home-outline" size={24} color={color} />
+    if (focused)
+      return <MaterialCommunityIcons name="home" size={24} color={color} />;
+    return (
+      <MaterialCommunityIcons name="home-outline" size={24} color={color} />
+    );
   };
 
   function renderCreateIcon(focused, color, size) {
@@ -48,15 +53,27 @@ function Main(props) {
   }
 
   function renderProfileIcon(focused, color, size) {
-    return <AntDesign name="user" size={24} color={color} />
+    if (focused) return <MaterialIcons name="person" size={24} color={color} />;
+    else return <MaterialIcons name="person-outline" size={24} color={color} />;
   }
 
   function renderSearchIcon(focused, color, size) {
-    return <FontAwesome name="search" size={24} color={color} />
+    return <FontAwesome name="search" size={24} color={color} />;
   }
 
   function renderChallengeIcon(focused, color, size) {
-    return <FontAwesome name="trophy" size={24} color={color} />
+    if (focused)
+      return (
+        <MaterialCommunityIcons name="trophy-variant" size={24} color={color} />
+      );
+    else
+      return (
+        <MaterialCommunityIcons
+          name="trophy-variant-outline"
+          size={24}
+          color={color}
+        />
+      );
   }
 
   return (

@@ -72,17 +72,17 @@ function RecipeVideos(props) {
     return (
       <SafeAreaView>
         <ScrollView
-          onScroll={function (event) {
-            var currentOffset = event.nativeEvent.contentOffset.x;
+          // onScroll={function (event) {
+          //   var currentOffset = event.nativeEvent.contentOffset.x;
 
-            var direction = currentOffset > offset ? "right" : "left";
-            offset = currentOffset;
-            if (direction === "right") {
-              props.setViewingRecipeStep(props.viewingRecipeStep - 1);
-            } else {
-              props.setViewingRecipeStep(props.viewingRecipeStep + 1);
-            }
-          }}
+          //   var direction = currentOffset > offset ? "right" : "left";
+          //   offset = currentOffset;
+          //   if (direction === "right") {
+          //     props.setViewingRecipeStep(props.viewingRecipeStep - 1);
+          //   } else {
+          //     props.setViewingRecipeStep(props.viewingRecipeStep + 1);
+          //   }
+          // }}
           contentOffset={{
             x: (props.viewingRecipeStep - 1) * window.width,
             y: 0,
