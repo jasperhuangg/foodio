@@ -203,8 +203,10 @@ class Post extends Component {
         >
           {this.props.post.comments.map((comment, index) => (
             <View key={index} style={{ paddingTop: 7, paddingBottom: 7 }}>
-              <Text style={{ fontSize: 18 }}>{comment.content}</Text>
-              <Text style={{ fontSize: 14, color: "grey" }}>
+              <Text style={{ fontSize: 18, marginLeft: 20 }}>
+                {comment.content}
+              </Text>
+              <Text style={{ fontSize: 14, color: "grey", marginLeft: 20 }}>
                 {comment.postedBy} · {getFormattedDate(comment.timestamp)}
               </Text>
             </View>
