@@ -100,7 +100,6 @@ class Post extends Component {
     const post = firestore.collection("posts").doc(postID);
     const postLikes = firestore.collection("post-likes").doc(postLikesID);
 
-    // TODO: Update post-likes collection
     post.update({
       likes: firebase.firestore.FieldValue.arrayRemove(userID),
     });
