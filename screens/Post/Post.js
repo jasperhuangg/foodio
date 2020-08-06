@@ -71,15 +71,11 @@ class Post extends Component {
     const userID = this.props.userID;
     const postLikesID = `${postID}:${userID}`;
     const post = firestore.collection("posts").doc(postID);
-    const postLikes = firestore.collection("post-likes").doc(postLikesID);
+    const userCollection = firestore.collection("users").doc(userID);
 
-    postLikes
-      .set({
-        liked: true,
-      })
-      .catch(function (error) {
-        console.error("Error writing document: ", error);
-      });
+    userCollection.update({
+      likes: firebase.firestore.FieldValue.arrayUnion(postID),
+    });
 
     post.update({
       likes: firebase.firestore.FieldValue.arrayUnion(userID),
@@ -100,14 +96,14 @@ class Post extends Component {
     const userID = this.props.userID;
     const postLikesID = `${postID}:${userID}`;
     const post = firestore.collection("posts").doc(postID);
-    const postLikes = firestore.collection("post-likes").doc(postLikesID);
+    const userCollection = firestore.collection("users").doc(userID);
 
     post.update({
       likes: firebase.firestore.FieldValue.arrayRemove(userID),
     });
 
-    postLikes.delete().catch(function (error) {
-      console.error("Error writing document: ", error);
+    userCollection.update({
+      likes: firebase.firestore.FieldValue.arrayRemove(postID),
     });
 
     var newLikes = this.state.likes;

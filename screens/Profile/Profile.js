@@ -1,10 +1,11 @@
 import * as firebase from "firebase";
-import React, { Component } from "react";
+import React, { Component, useState, useEffect } from "react";
 import {
   ActivityIndicator,
   Button,
   Dimensions,
   SafeAreaView,
+  View,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -19,6 +20,7 @@ import {
   setViewingRecipeStep,
 } from "../../util/app-redux";
 import Post from "../Post/Post";
+import { TabView, SceneMap } from "react-native-tab-view";
 
 const window = Dimensions.get("window");
 
@@ -47,58 +49,83 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-class Profile extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      followers: [],
-      following: [],
-      posts: [],
-      username: props.userID,
-      loaded: false,
-    };
-  }
+function Profile(props) {
+  // class Profile extends Component {
+  const [posts, setPosts] = useState([]);
+  const [likedPosts, setLikedPosts] = useState([]);
 
-  async componentDidMount() {
+  const [loaded, setLoaded] = useState(false);
+
+  const [index, setIndex] = React.useState(0);
+  const [routes] = React.useState([
+    { key: "first", title: "Your Posts" },
+    { key: "second", title: "Bookmarks" },
+  ]);
+
+  const renderScene = SceneMap({
+    first: renderProfile,
+    second: renderSaved,
+  });
+
+  const initialLayout = { width: Dimensions.get("window").width };
+
+  useEffect(async () => {
     const firestore = firebase.firestore();
-    const userDocument = await firestore.collection("users").doc(this.props.userID).get();
+    const userDocument = await firestore
+      .collection("users")
+      .doc(props.userID)
+      .get();
     setTabsShowing(true);
     const posts = firestore.collection("posts");
+
     var userPosts = [];
     // Horribly inefficient, but did not find a method that returns multiple
     // docs at once
-
     for (const postId of userDocument.get("posts")) {
       const post = await posts.doc(postId).get();
 
       const postObj = post.data();
       postObj.postID = postId;
 
-      userPosts.push(
-        {
-          postID: postId,
-          comments: post.get("comments"),
-          likes: post.get("likes"),
-          recipeID: post.get("recipeID"),
-          recipeName: post.get("recipeName"),
-          imageUrl: post.get("imageUrl"),
-          postedBy: post.get("postedBy"),
-          timestamp: post.get("timestamp"),
-        }
-        // post.data()
-      );
+      userPosts.push({
+        postID: postId,
+        comments: post.get("comments"),
+        likes: post.get("likes"),
+        recipeID: post.get("recipeID"),
+        recipeName: post.get("recipeName"),
+        imageUrl: post.get("imageUrl"),
+        postedBy: post.get("postedBy"),
+        timestamp: post.get("timestamp"),
+      });
     }
 
-    this.setState({
-      followers: userDocument.get("followers"),
-      following: userDocument.get("following"),
-      posts: userPosts,
-      loaded: true,
-    });
-  }
+    setPosts(userPosts);
+    setLoaded(true);
 
-  render() {
-    if (this.state.loaded)
+    var userLikedPosts = [];
+    for (const postId of userDocument.get("likes")) {
+      const post = await posts.doc(postId).get();
+
+      const postObj = post.data();
+      postObj.postID = postId;
+
+      userLikedPosts.push({
+        postID: postId,
+        comments: post.get("comments"),
+        likes: post.get("likes"),
+        recipeID: post.get("recipeID"),
+        recipeName: post.get("recipeName"),
+        imageUrl: post.get("imageUrl"),
+        postedBy: post.get("postedBy"),
+        timestamp: post.get("timestamp"),
+      });
+    }
+
+    setLikedPosts(userLikedPosts);
+  }, []);
+
+  function renderProfile() {
+    if (loaded)
       return (
         <SafeAreaView
           style={{
@@ -108,10 +135,10 @@ class Profile extends Component {
           }}
         >
           <ScrollView>
-            {this.state.posts.map((post) => (
+            {posts.map((post) => (
               <Post
                 key={post.recipeID}
-                navigation={this.props.navigation}
+                navigation={props.navigation}
                 post={post}
               />
             ))}
@@ -133,6 +160,52 @@ class Profile extends Component {
         </SafeAreaView>
       );
   }
+
+  function renderSaved() {
+    if (loaded)
+      return (
+        <SafeAreaView
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <ScrollView>
+            {likedPosts.map((post) => (
+              <Post
+                key={post.recipeID}
+                navigation={props.navigation}
+                post={post}
+              />
+            ))}
+          </ScrollView>
+        </SafeAreaView>
+      );
+    else
+      return (
+        <SafeAreaView
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            width: window.width,
+            height: window.height - 120,
+          }}
+        >
+          <ActivityIndicator size="small" color="grey" />
+        </SafeAreaView>
+      );
+  }
+
+  return (
+    <TabView
+      navigationState={{ index, routes }}
+      renderScene={renderScene}
+      onIndexChange={setIndex}
+      initialLayout={initialLayout}
+    />
+  );
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Profile);
