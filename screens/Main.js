@@ -2,13 +2,15 @@ import React, { useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { connect } from "react-redux";
-import Home from "./Home";
+import Home from "./Home/Home";
 import Create from "./Create";
-import ProfileStack from "./Profile/ProfileStack";
 import { setTabsShowing, setUserID } from "../util/app-redux";
 import { Entypo } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+
+import ProfileStack from "./Profile/ProfileStack";
+import HomeStack from "./Home/HomeStack";
 
 const mapStateToProps = (state) => {
   return {
@@ -63,8 +65,16 @@ function Main(props) {
         },
       })}
     >
-      <Tab.Screen name="Home" component={Home} />
-      <Tab.Screen name="Create" component={Create} />
+      <Tab.Screen
+        name="Home"
+        component={HomeStack}
+        options={{ title: "Feed" }}
+      />
+      <Tab.Screen
+        name="Create"
+        component={Create}
+        options={{ title: "Add Post" }}
+      />
       <Tab.Screen
         name="Profile"
         component={ProfileStack}

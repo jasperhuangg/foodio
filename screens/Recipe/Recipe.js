@@ -49,6 +49,7 @@ function Recipe(props) {
     const recipeID = props.viewingRecipe;
 
     const ref = firebase.firestore().collection("recipes").doc(recipeID);
+    console.log(recipeID);
     ref.get().then((document) => {
       setRecipe(document.data());
       setLoaded(true);
@@ -169,7 +170,7 @@ const styles = StyleSheet.create({
   },
 
   header: {
-    fontWeight: "700",
+    fontWeight: "900",
     fontSize: 27,
   },
   subheader: {

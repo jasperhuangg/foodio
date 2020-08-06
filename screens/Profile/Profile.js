@@ -62,7 +62,7 @@ class Profile extends Component {
   async componentDidMount() {
     const firestore = firebase.firestore();
     const userDocument = await firestore.collection("users").doc("admin").get();
-
+    setTabsShowing(true);
     const posts = firestore.collection("posts");
     var userPosts = [];
     // Horribly inefficient, but did not find a method that returns multiple

@@ -18,8 +18,8 @@ import {
   setUserID,
   setViewingRecipe,
   setViewingRecipeStep,
-} from "../util/app-redux";
-import Post from "./Post/Post";
+} from "../../util/app-redux";
+import Post from "../Post/Post";
 
 const window = Dimensions.get("window");
 
