@@ -20,8 +20,7 @@ export default (props) => {
           fontWeight: "600",
         }}
       >
-        Add a recipe by adding a video or image for each step and adding a short
-        description (similar to IG stories).
+        Search for recipes posted globally by all users.
       </Text>
     </SafeAreaView>
   );

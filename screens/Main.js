@@ -2,8 +2,7 @@ import React, { useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { connect } from "react-redux";
-import Home from "./Home/Home";
-import Create from "./Create";
+
 import { setTabsShowing, setUserID } from "../util/app-redux";
 import { AntDesign } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -12,6 +11,9 @@ import { MaterialIcons } from "@expo/vector-icons";
 
 import ProfileStack from "./Profile/ProfileStack";
 import HomeStack from "./Home/HomeStack";
+import Create from "./Create";
+import Search from "./Search";
+import Challenges from "./Challenges";
 
 const mapStateToProps = (state) => {
   return {
@@ -102,8 +104,8 @@ function Main(props) {
       />
       <Tab.Screen
         name="Search"
-        component={Create}
-        options={{ tabBarVisible: props.tabsShowing }}
+        component={Search}
+        options={{ title: "Search" }}
       />
       <Tab.Screen
         name="Create"
@@ -112,8 +114,8 @@ function Main(props) {
       />
       <Tab.Screen
         name="Challenge"
-        component={Create}
-        options={{ tabBarVisible: props.tabsShowing }}
+        component={Challenges}
+        options={{ title: "Challenges" }}
       />
       <Tab.Screen
         name="Profile"
