@@ -9,6 +9,8 @@ import {
   Button,
   ActivityIndicator,
   Platform,
+  TouchableOpacity,
+  Dimensions,
 } from "react-native";
 import { connect } from "react-redux";
 import {
@@ -17,6 +19,7 @@ import {
   setViewingRecipe,
   setViewingRecipeStep,
 } from "../../util/app-redux";
+import { Entypo } from "@expo/vector-icons";
 
 const mapStateToProps = (state) => {
   return {
@@ -42,6 +45,8 @@ const mapDispatchToProps = (dispatch) => {
     },
   };
 };
+
+const window = Dimensions.get("window");
 
 class Post extends Component {
   constructor(props) {
@@ -75,38 +80,20 @@ class Post extends Component {
 
   render() {
     return (
-      <SafeAreaView
+      <View
         style={{
           padding: 10,
           flex: 1,
           justifyContent: "center",
           alignItems: "center",
+          borderBottomWidth: 1,
+          borderBottomColor: "lightgrey",
         }}
       >
-        <Text style={styles.header}>{this.props.post.recipeName}</Text>
-        <Button
-          onPress={() => {
-            this.props.setViewingRecipe(this.props.post.recipeID);
-            this.props.setViewingRecipeStep(1);
-            this.props.navigation.navigate("Recipe");
-            this.props.setTabsShowing(false);
-          }}
-          key={this.props.post.recipeID}
-          title={"View Recipe"}
-          color="#841584"
-        ></Button>
-        <Button
-          onPress={() => {
-            this.likePost();
-          }}
-          title={"Like Post"}
-        ></Button>
-        <Button
-          onPress={() => {
-            this.unlikePost();
-          }}
-          title={"Unlike Post"}
-        ></Button>
+        <View>
+          <Text style={styles.header}>{this.props.post.recipeName}</Text>
+        </View>
+
         {!this.state.imageLoaded ? <LoadingView /> : <View></View>}
         <Image
           source={{
@@ -114,14 +101,28 @@ class Post extends Component {
           }}
           style={{
             height: 400,
-            width: 400,
+            width: window.width - 20,
             resizeMode: "cover",
+            borderRadius: 10,
           }}
           onLoad={(e) => {
             this.setState({ imageLoaded: true });
           }}
         />
-      </SafeAreaView>
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => {
+              this.props.setViewingRecipe(this.props.post.recipeID);
+              this.props.setViewingRecipeStep(1);
+              this.props.navigation.navigate("Recipe");
+              this.props.setTabsShowing(false);
+            }}
+          >
+            <Entypo name="open-book" size={24} color="orange" />
+          </TouchableOpacity>
+        </View>
+      </View>
     );
   }
 }
@@ -130,12 +131,13 @@ function LoadingView(props) {
   return (
     <View
       style={{
-        width: 400,
-        height: 400,
+        width: window.width - 20,
+        height: 400 + 50,
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
         position: "absolute",
+        top: 50,
         backgroundColor: "#f0f0f0",
       }}
     >
@@ -153,10 +155,24 @@ const styles = {
   header: {
     fontWeight: "700",
     fontSize: 27,
+    width: window.width - 20,
+    marginBottom: 10,
   },
   subheader: {
     fontWeight: "700",
     fontSize: 23,
+  },
+  buttonContainer: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    // justifyContent: "center",
+    width: window.width - 20,
+    height: 50,
+    paddingLeft: 10,
+  },
+  button: {
+    marginRight: 20,
   },
 };
 
