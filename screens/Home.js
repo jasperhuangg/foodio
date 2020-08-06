@@ -1,13 +1,60 @@
-import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, SafeAreaView, View } from "react-native";
 import * as firebase from "firebase";
+import React, { useEffect, useState } from "react";
+import {
+  ActivityIndicator,
+  Button,
+  Dimensions,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+} from "react-native";
 
-export default (props) => {
+import { FlatList, ScrollView } from "react-native-gesture-handler";
+import { connect } from "react-redux";
+
+import {
+  setTabsShowing,
+  setUserID,
+  setViewingRecipe,
+  setViewingRecipeStep,
+} from "../util/app-redux";
+import Post from "./Post/Post";
+
+const window = Dimensions.get("window");
+
+const mapStateToProps = (state) => {
+  return {
+    userID: state.userID,
+    viewingRecipe: state.viewingRecipe,
+    viewingRecipeStep: state.viewingRecipeStep,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setUserID: (userID) => {
+      dispatch(setUserID(userID));
+    },
+    setViewingRecipe: (recipeID) => {
+      dispatch(setViewingRecipe(recipeID));
+    },
+    setViewingRecipeStep: (stepNum) => {
+      dispatch(setViewingRecipeStep(stepNum));
+    },
+    setTabsShowing: (showing) => {
+      dispatch(setTabsShowing(showing));
+    },
+  };
+};
+
+function Home(props) {
   const [posts, setPosts] = useState([]);
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     // get all posts from firestore by timestamp
-    const ref = firebase
+    firebase
       .firestore()
       .collection("posts")
       .orderBy("timestamp", "desc")
@@ -19,24 +66,44 @@ export default (props) => {
           postArr.push(document.data());
         });
         setPosts(postArr);
+        setLoaded(true);
       });
   }, []);
 
-  return (
-    <SafeAreaView
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      {posts.map((post) => {
-        return (
-          <View key={post.recipeID}>
-            <Text>{post.recipeID}</Text>
-          </View>
-        );
-      })}
-    </SafeAreaView>
-  );
-};
+  if (loaded)
+    return (
+      <SafeAreaView
+        style={{
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <ScrollView>
+          {posts.map((post) => (
+            <Post
+              key={post.recipeID}
+              navigation={props.navigation}
+              post={post}
+            />
+          ))}
+        </ScrollView>
+      </SafeAreaView>
+    );
+  else
+    return (
+      <SafeAreaView
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          width: window.width,
+          height: window.height - 120,
+        }}
+      >
+        <ActivityIndicator size="small" color="grey" />
+      </SafeAreaView>
+    );
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

@@ -71,19 +71,21 @@ class Profile extends Component {
     for (const postId of userDocument.get("posts")) {
       const post = await posts.doc(postId).get();
 
-      userPosts.push(
-        // {
-        // postID: postId,
-        // comments: post.get("comments"),
-        // likes: post.get("likes"),
-        // recipeID: post.get("recipeID"),
-        // recipeName: post.get("recipeName"),
-        // imageUrl: post.get("imageUrl"),
-        // postedBy: post.get("postedBy"),
-        // timestamp: post.get("timestamp"),
+      const postObj = post.data();
+      postObj.postID = postId;
 
-        // }
-        post.data()
+      userPosts.push(
+        {
+          postID: postId,
+          comments: post.get("comments"),
+          likes: post.get("likes"),
+          recipeID: post.get("recipeID"),
+          recipeName: post.get("recipeName"),
+          imageUrl: post.get("imageUrl"),
+          postedBy: post.get("postedBy"),
+          timestamp: post.get("timestamp"),
+        }
+        // post.data()
       );
     }
 
