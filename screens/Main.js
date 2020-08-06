@@ -5,7 +5,6 @@ import { connect } from "react-redux";
 import Home from "./Home/Home";
 import Create from "./Create";
 import { setTabsShowing, setUserID } from "../util/app-redux";
-import { Entypo } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
@@ -40,7 +39,7 @@ function Main(props) {
   }, []);
 
   const renderHomeIcon = (focused, color, size) => {
-    return <Entypo name="home" size={size} color={color} />;
+    return <MaterialCommunityIcons name="home-outline" size={24} color="black" />
   };
 
   function renderCreateIcon(focused, color, size) {
@@ -48,7 +47,7 @@ function Main(props) {
   }
 
   function renderProfileIcon(focused, color, size) {
-    return <MaterialCommunityIcons name="chef-hat" size={size} color={color} />;
+    return <AntDesign name="user" size={24} color="black" />
   }
 
   return (
