@@ -21,8 +21,9 @@ import {
 } from "../../util/app-redux";
 
 import { Entypo } from "@expo/vector-icons";
-import { AntDesign } from "@expo/vector-icons";
+import { FontAwesome } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
+import { ScrollView } from "react-native-gesture-handler";
 
 const mapStateToProps = (state) => {
   return {
@@ -63,12 +64,22 @@ class Post extends Component {
     return { likes: props.post.likes };
   }
 
-  likePost() {
+  async likePost() {
     const firestore = firebase.firestore();
     const postID = this.props.post.postID;
     const userID = this.props.userID;
+    const postLikesID = `${postID}:${userID}`;
     const post = firestore.collection("posts").doc(postID);
-    // TODO: Update post-likes collection
+    const postLikes = firestore.collection("post-likes").doc(postLikesID);
+
+    postLikes
+      .set({
+        liked: true,
+      })
+      .catch(function (error) {
+        console.error("Error writing document: ", error);
+      });
+
     post.update({
       likes: firebase.firestore.FieldValue.arrayUnion(userID),
     });
@@ -82,14 +93,20 @@ class Post extends Component {
     });
   }
 
-  unlikePost() {
+  async unlikePost() {
     const firestore = firebase.firestore();
     const postID = this.props.post.postID;
     const userID = this.props.userID;
+    const postLikesID = `${postID}:${userID}`;
     const post = firestore.collection("posts").doc(postID);
-    // TODO: Update post-likes collection
+    const postLikes = firestore.collection("post-likes").doc(postLikesID);
+
     post.update({
       likes: firebase.firestore.FieldValue.arrayRemove(userID),
+    });
+
+    postLikes.delete().catch(function (error) {
+      console.error("Error writing document: ", error);
     });
 
     var newLikes = this.state.likes;
@@ -151,19 +168,35 @@ class Post extends Component {
               style={styles.button}
               onPress={() => this.unlikePost()}
             >
-              <AntDesign name="heart" size={24} color="rgb(218, 56, 73)" />
+              <FontAwesome name="bookmark" size={24} color="black" />
             </TouchableOpacity>
           ) : (
             <TouchableOpacity
               style={styles.button}
               onPress={() => this.likePost()}
             >
-              <AntDesign name="hearto" size={24} color="rgb(218, 56, 73)" />
+              <FontAwesome name="bookmark-o" size={24} color="black" />
             </TouchableOpacity>
           )}
           <TouchableOpacity style={styles.button}>
             <FontAwesome5 name="comment" size={24} color="grey" />
           </TouchableOpacity>
+        </View>
+        <View>
+          <ScrollView
+            style={{
+              padding: 10,
+            }}
+          >
+            {this.props.post.comments.map((comment, index) => (
+              <View key={index}>
+                <Text style={{ fontSize: 18 }}>{comment.content}</Text>
+                <Text style={{ fontSize: 14 }}>
+                  {comment.postedBy} · {getFormattedDate(comment.timestamp)}
+                </Text>
+              </View>
+            ))}
+          </ScrollView>
         </View>
       </View>
     );
