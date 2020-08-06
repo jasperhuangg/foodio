@@ -1,21 +1,24 @@
 import * as firebase from "firebase";
 import React, { Component } from "react";
 import {
+  ActivityIndicator,
   Button,
+  Dimensions,
   SafeAreaView,
   StyleSheet,
   Text,
   TouchableOpacity,
-  Dimensions,
-  ActivityIndicator,
 } from "react-native";
+import { FlatList } from "react-native-gesture-handler";
 import { connect } from "react-redux";
+
 import {
-  setViewingRecipe,
-  setUserID,
-  setViewingRecipeStep,
   setTabsShowing,
+  setUserID,
+  setViewingRecipe,
+  setViewingRecipeStep,
 } from "../../util/app-redux";
+import Post from "../Post/Post";
 
 const window = Dimensions.get("window");
 
@@ -62,7 +65,8 @@ class Profile extends Component {
 
     const posts = firestore.collection("posts");
     var userPosts = [];
-    // Horribly inefficient, but did not find a method that returns multiple docs at once
+    // Horribly inefficient, but did not find a method that returns multiple
+    // docs at once
 
     for (const postId of userDocument.get("posts")) {
       const post = await posts.doc(postId).get();
@@ -83,6 +87,7 @@ class Profile extends Component {
   }
 
   render() {
+    console.log(this.state.posts)
     if (this.state.loaded)
       return (
         <SafeAreaView
@@ -94,21 +99,11 @@ class Profile extends Component {
         >
           <Text>{this.state.username}</Text>
 
-          <React.Fragment>
+          <FlatList>
             {this.state.posts.map((post) => (
-              <Button
-                onPress={() => {
-                  this.props.setViewingRecipe(post.recipeID);
-                  this.props.setViewingRecipeStep(1);
-                  this.props.navigation.navigate("Recipe");
-                  this.props.setTabsShowing(false);
-                }}
-                key={post.recipeID}
-                title={"View Recipe " + post.recipeID}
-                color="#841584"
-              ></Button>
+              <Post key={post.recipeID} recipeID={post.recipeID} />
             ))}
-          </React.Fragment>
+          </FlatList>
         </SafeAreaView>
       );
     else
