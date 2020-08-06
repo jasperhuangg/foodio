@@ -56,12 +56,19 @@ class Post extends Component {
     return { likes: props.post.likes };
   }
 
-  likePost() {
+  async likePost() {
     const firestore = firebase.firestore();
     const postID = this.props.post.postID;
     const userID = this.props.userID;
+    const postLikesID = `${postID}:${userID}`;
     const post = firestore.collection("posts").doc(postID);
+    const postLikes = firestore.collection("posts-likes").doc(postLikesID);
+
     // TODO: Update post-likes collection
+    await postLikes.set({
+      liked: true
+    });
+
     post.update({
       likes: firebase.firestore.FieldValue.arrayUnion(userID),
     });
@@ -75,15 +82,20 @@ class Post extends Component {
     });
   }
 
-  unlikePost() {
+  async unlikePost() {
     const firestore = firebase.firestore();
     const postID = this.props.post.postID;
     const userID = this.props.userID;
+    const postLikesID = `${postID}:${userID}`;
     const post = firestore.collection("posts").doc(postID);
+    const postLikes = firestore.collection("posts-likes").doc(postLikesID);
+
     // TODO: Update post-likes collection
     post.update({
       likes: firebase.firestore.FieldValue.arrayRemove(userID),
     });
+
+    await postLikes.delete();
 
     var newLikes = this.state.likes;
     removeItemOnce(newLikes, userID);
