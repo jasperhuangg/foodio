@@ -60,11 +60,11 @@ class Post extends Component {
     const firestore = firebase.firestore();
     const postID = this.props.post.postID;
     const userID = this.props.userID;
-    // const post = firestore.collection("posts").doc(postID);
-    // // TODO: Update post-likes collection
-    // post.update({
-    //   likes: firebase.firestore.FieldValue.arrayUnion(userID),
-    // });
+    const post = firestore.collection("posts").doc(postID);
+    // TODO: Update post-likes collection
+    post.update({
+      likes: firebase.firestore.FieldValue.arrayUnion(userID),
+    });
 
     var newLikes = this.state.likes;
     newLikes.push(userID);
@@ -79,14 +79,14 @@ class Post extends Component {
     const firestore = firebase.firestore();
     const postID = this.props.post.postID;
     const userID = this.props.userID;
-    // const post = firestore.collection("posts").doc(postID);
-    // // TODO: Update post-likes collection
-    // post.update({
-    //   likes: firebase.firestore.FieldValue.arrayRemove(userID),
-    // });
+    const post = firestore.collection("posts").doc(postID);
+    // TODO: Update post-likes collection
+    post.update({
+      likes: firebase.firestore.FieldValue.arrayRemove(userID),
+    });
 
     var newLikes = this.state.likes;
-    newLikes.remove(userID);
+    removeItemOnce(newLikes, userID);
 
     this.setState({
       ...this.state,
@@ -143,6 +143,14 @@ class Post extends Component {
       </SafeAreaView>
     );
   }
+}
+
+function removeItemOnce(arr, value) {
+  var index = arr.indexOf(value);
+  if (index > -1) {
+    arr.splice(index, 1);
+  }
+  return arr;
 }
 
 function LoadingView(props) {
