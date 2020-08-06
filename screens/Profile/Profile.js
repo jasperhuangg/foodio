@@ -75,6 +75,8 @@ class Profile extends Component {
         comments: post.get("comments"),
         likes: post.get("likes"),
         recipeID: post.get("recipeID"),
+        recipeName: post.get("recipeName"),
+        imageUrl: post.get("imageUrl"),
       });
     }
 
@@ -87,7 +89,6 @@ class Profile extends Component {
   }
 
   render() {
-    console.log(this.state.posts);
     if (this.state.loaded)
       return (
         <SafeAreaView
@@ -97,13 +98,13 @@ class Profile extends Component {
             alignItems: "center",
           }}
         >
-          <Text>{this.state.username}</Text>
           <ScrollView>
             {this.state.posts.map((post) => (
               <Post
                 key={post.recipeID}
                 navigation={this.props.navigation}
                 recipeID={post.recipeID}
+                post={post}
               />
             ))}
           </ScrollView>

@@ -32,7 +32,7 @@ export default (props) => {
     >
       {posts.map((post) => {
         return (
-          <View>
+          <View key={post.recipeID}>
             <Text>{post.recipeID}</Text>
           </View>
         );

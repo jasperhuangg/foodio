@@ -6,6 +6,7 @@ import {
   View,
   Image,
   Button,
+  ActivityIndicator,
 } from "react-native";
 import { connect } from "react-redux";
 import {
@@ -43,7 +44,9 @@ const mapDispatchToProps = (dispatch) => {
 class Post extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      imageLoaded: false,
+    };
   }
 
   render() {
@@ -56,14 +59,7 @@ class Post extends Component {
           alignItems: "center",
         }}
       >
-        <Image
-          source={{
-            uri:
-              "https://images.unsplash.com/photo-1596181367808-c7c64b779b46?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
-          }}
-          style={{ height: 400, width: 400, resizeMode: "cover" }}
-        />
-        <Text style={styles.header}>recipe name</Text>
+        <Text style={styles.header}>{this.props.post.recipeName}</Text>
         <Button
           onPress={() => {
             this.props.setViewingRecipe(this.props.recipeID);
@@ -75,9 +71,40 @@ class Post extends Component {
           title={"View Recipe"}
           color="#841584"
         ></Button>
+        {!this.state.imageLoaded ? <LoadingView /> : <View></View>}
+        <Image
+          source={{
+            uri: this.props.post.imageUrl,
+          }}
+          style={{
+            height: this.state.imageLoaded ? 400 : 0,
+            width: this.state.imageLoaded ? 400 : 0,
+            resizeMode: "cover",
+          }}
+          onLoad={(e) => {
+            alert("loaded");
+            this.setState({ imageLoaded: true });
+          }}
+        />
       </SafeAreaView>
     );
   }
+}
+
+function LoadingView(props) {
+  return (
+    <View
+      style={{
+        width: 400,
+        height: 400,
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <ActivityIndicator size="small" color="grey" />
+    </View>
+  );
 }
 
 const styles = {
