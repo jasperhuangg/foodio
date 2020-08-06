@@ -102,10 +102,8 @@ class Profile extends Component {
           <ScrollView>
             {this.state.posts.map((post) => (
               <Post
-                postID={post.postID}
                 key={post.recipeID}
                 navigation={this.props.navigation}
-                recipeID={post.recipeID}
                 post={post}
               />
             ))}
