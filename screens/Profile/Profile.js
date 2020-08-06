@@ -61,7 +61,7 @@ class Profile extends Component {
 
   async componentDidMount() {
     const firestore = firebase.firestore();
-    const userDocument = await firestore.collection("users").doc("admin").get();
+    const userDocument = await firestore.collection("users").doc(this.props.userID).get();
     setTabsShowing(true);
     const posts = firestore.collection("posts");
     var userPosts = [];
