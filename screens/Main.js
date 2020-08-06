@@ -7,6 +7,7 @@ import Create from "./Create";
 import { setTabsShowing, setUserID } from "../util/app-redux";
 import { AntDesign } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { FontAwesome } from '@expo/vector-icons';
 
 import ProfileStack from "./Profile/ProfileStack";
 import HomeStack from "./Home/HomeStack";
@@ -39,7 +40,7 @@ function Main(props) {
   }, []);
 
   const renderHomeIcon = (focused, color, size) => {
-    return <MaterialCommunityIcons name="home-outline" size={24} color="black" />
+    return <MaterialCommunityIcons name="home-outline" size={24} color={color} />
   };
 
   function renderCreateIcon(focused, color, size) {
@@ -47,7 +48,15 @@ function Main(props) {
   }
 
   function renderProfileIcon(focused, color, size) {
-    return <AntDesign name="user" size={24} color="black" />
+    return <AntDesign name="user" size={24} color={color} />
+  }
+
+  function renderSearchIcon(focused, color, size) {
+    return <FontAwesome name="search" size={24} color={color} />
+  }
+
+  function renderChallengeIcon(focused, color, size) {
+    return <FontAwesome name="trophy" size={24} color={color} />
   }
 
   return (
@@ -61,6 +70,10 @@ function Main(props) {
             return renderCreateIcon(focused, color, size);
           if (route.name === "Profile")
             return renderProfileIcon(focused, color, size);
+          if (route.name === "Search")
+            return renderSearchIcon(focused, color, size);
+          if (route.name === "Challenge")
+            return renderChallengeIcon(focused, color, size);
         },
       })}
     >
@@ -70,9 +83,19 @@ function Main(props) {
         options={{ title: "Feed" }}
       />
       <Tab.Screen
+        name="Search"
+        component={Create}
+        options={{ tabBarVisible: props.tabsShowing }}
+      />
+      <Tab.Screen
         name="Create"
         component={Create}
         options={{ title: "Add Post" }}
+      />
+      <Tab.Screen
+        name="Challenge"
+        component={Create}
+        options={{ tabBarVisible: props.tabsShowing }}
       />
       <Tab.Screen
         name="Profile"
