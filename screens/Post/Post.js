@@ -59,8 +59,9 @@ class Post extends Component {
         <Image
           source={{
             uri:
-              "http://www.bpimaging.com/assets/uploads/2016/12/toronto-food-pita.jpg",
+              "https://images.unsplash.com/photo-1596181367808-c7c64b779b46?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
           }}
+          style={{ height: 400, width: 400, resizeMode: "cover" }}
         />
         <Text style={styles.header}>recipe name</Text>
         <Button
