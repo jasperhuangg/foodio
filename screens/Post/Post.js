@@ -1,8 +1,46 @@
 import React, { Component } from "react";
-import { SafeAreaView, StyleSheet, Text, View, Image } from "react-native";
+import {
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  Button,
+} from "react-native";
 import { connect } from "react-redux";
+import {
+  setTabsShowing,
+  setUserID,
+  setViewingRecipe,
+  setViewingRecipeStep,
+} from "../../util/app-redux";
 
-export default class Post extends Component {
+const mapStateToProps = (state) => {
+  return {
+    userID: state.userID,
+    viewingRecipe: state.viewingRecipe,
+    viewingRecipeStep: state.viewingRecipeStep,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setUserID: (userID) => {
+      dispatch(setUserID(userID));
+    },
+    setViewingRecipe: (recipeID) => {
+      dispatch(setViewingRecipe(recipeID));
+    },
+    setViewingRecipeStep: (stepNum) => {
+      dispatch(setViewingRecipeStep(stepNum));
+    },
+    setTabsShowing: (showing) => {
+      dispatch(setTabsShowing(showing));
+    },
+  };
+};
+
+class Post extends Component {
   constructor(props) {
     super(props);
     this.state = {};
@@ -10,27 +48,32 @@ export default class Post extends Component {
 
   render() {
     return (
-      <SafeAreaView>
+      <SafeAreaView
+        style={{
+          padding: 10,
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
         <Image
           source={{
             uri:
               "http://www.bpimaging.com/assets/uploads/2016/12/toronto-food-pita.jpg",
           }}
         />
-        <Text>Lasagne</Text>
-        <Text>{this.props.recipeID}</Text>
-
-        {/* <Button
-                onPress={() => {
-                  this.props.setViewingRecipe(post.recipeID);
-                  this.props.setViewingRecipeStep(1);
-                  this.props.navigation.navigate("Recipe");
-                  this.props.setTabsShowing(false);
-                }}
-                key={post.recipeID}
-                title={"View Recipe " + post.recipeID}
-                color="#841584"
-              ></Button> */}
+        <Text style={styles.header}>recipe name</Text>
+        <Button
+          onPress={() => {
+            this.props.setViewingRecipe(this.props.recipeID);
+            this.props.setViewingRecipeStep(1);
+            this.props.navigation.navigate("Recipe");
+            this.props.setTabsShowing(false);
+          }}
+          key={this.props.recipeID}
+          title={"View Recipe"}
+          color="#841584"
+        ></Button>
       </SafeAreaView>
     );
   }
@@ -42,4 +85,14 @@ const styles = {
     flexDirection: "row",
     justifyContent: "center",
   },
+  header: {
+    fontWeight: "700",
+    fontSize: 27,
+  },
+  subheader: {
+    fontWeight: "700",
+    fontSize: 23,
+  },
 };
+
+export default connect(mapStateToProps, mapDispatchToProps)(Post);

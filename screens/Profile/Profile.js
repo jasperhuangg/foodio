@@ -9,7 +9,7 @@ import {
   Text,
   TouchableOpacity,
 } from "react-native";
-import { FlatList } from "react-native-gesture-handler";
+import { FlatList, ScrollView } from "react-native-gesture-handler";
 import { connect } from "react-redux";
 
 import {
@@ -98,10 +98,15 @@ class Profile extends Component {
           }}
         >
           <Text>{this.state.username}</Text>
-
-          {this.state.posts.map((post) => (
-            <Post key={post.recipeID} recipeID={post.recipeID} />
-          ))}
+          <ScrollView>
+            {this.state.posts.map((post) => (
+              <Post
+                key={post.recipeID}
+                navigation={this.props.navigation}
+                recipeID={post.recipeID}
+              />
+            ))}
+          </ScrollView>
         </SafeAreaView>
       );
     else
