@@ -52,8 +52,8 @@ class Post extends Component {
 
   likePost() {
     const firestore = firebase.firestore();
-    const postID = this.props.postID;
-    const userID = this.props.userID;
+    const postID = this.props.post.postID;
+    const userID = this.props.post.userID;
     const post = firestore.collection("posts").doc(postID);
 
     post.update({
@@ -63,8 +63,8 @@ class Post extends Component {
 
   unlikePost() {
     const firestore = firebase.firestore();
-    const postID = this.props.postID;
-    const userID = this.props.userID;
+    const postID = this.props.post.postID;
+    const userID = this.props.post.userID;
     const post = firestore.collection("posts").doc(postID);
 
     post.update({
@@ -85,12 +85,12 @@ class Post extends Component {
         <Text style={styles.header}>{this.props.post.recipeName}</Text>
         <Button
           onPress={() => {
-            this.props.setViewingRecipe(this.props.recipeID);
+            this.props.setViewingRecipe(this.props.post.recipeID);
             this.props.setViewingRecipeStep(1);
             this.props.navigation.navigate("Recipe");
             this.props.setTabsShowing(false);
           }}
-          key={this.props.recipeID}
+          key={this.props.post.recipeID}
           title={"View Recipe"}
           color="#841584"
         ></Button>
