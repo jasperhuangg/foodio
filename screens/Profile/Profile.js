@@ -72,6 +72,7 @@ class Profile extends Component {
       const post = await posts.doc(postId).get();
 
       userPosts.push({
+        postID: postId,
         comments: post.get("comments"),
         likes: post.get("likes"),
         recipeID: post.get("recipeID"),
@@ -101,6 +102,7 @@ class Profile extends Component {
           <ScrollView>
             {this.state.posts.map((post) => (
               <Post
+                postID={post.postID}
                 key={post.recipeID}
                 navigation={this.props.navigation}
                 recipeID={post.recipeID}

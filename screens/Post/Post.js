@@ -1,3 +1,4 @@
+import * as firebase from "firebase";
 import React, { Component } from "react";
 import {
   SafeAreaView,
@@ -46,6 +47,28 @@ class Post extends Component {
     this.state = {};
   }
 
+  likePost() {
+    const firestore = firebase.firestore();
+    const postID = this.props.postID;
+    const userID = this.props.userID;
+    const post = firestore.collection("posts").doc(postID);
+
+    post.update({
+      likes: firebase.firestore.FieldValue.arrayUnion(userID),
+    });
+  }
+
+  unlikePost() {
+    const firestore = firebase.firestore();
+    const postID = this.props.postID;
+    const userID = this.props.userID;
+    const post = firestore.collection("posts").doc(postID);
+
+    post.update({
+      likes: firebase.firestore.FieldValue.arrayRemove(userID),
+    });
+  }
+
   render() {
     return (
       <SafeAreaView
@@ -74,6 +97,18 @@ class Post extends Component {
           key={this.props.recipeID}
           title={"View Recipe"}
           color="#841584"
+        ></Button>
+        <Button
+          onPress={() => {
+            this.likePost();
+          }}
+          title={"Like Post"}
+        ></Button>
+        <Button
+          onPress={() => {
+            this.unlikePost();
+          }}
+          title={"Unlike Post"}
         ></Button>
       </SafeAreaView>
     );
