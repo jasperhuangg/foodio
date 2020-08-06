@@ -16,6 +16,8 @@ import {
   setViewingRecipe,
   setViewingRecipeStep,
 } from "../../util/app-redux";
+import { AntDesign } from "@expo/vector-icons";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 const mapStateToProps = (state) => {
   return {
@@ -50,25 +52,45 @@ class Post extends Component {
     };
   }
 
+  static getDerivedStateFromProps(props, state) {
+    return { likes: props.post.likes };
+  }
+
   likePost() {
     const firestore = firebase.firestore();
     const postID = this.props.post.postID;
-    const userID = this.props.post.userID;
-    const post = firestore.collection("posts").doc(postID);
+    const userID = this.props.userID;
+    // const post = firestore.collection("posts").doc(postID);
+    // // TODO: Update post-likes collection
+    // post.update({
+    //   likes: firebase.firestore.FieldValue.arrayUnion(userID),
+    // });
 
-    post.update({
-      likes: firebase.firestore.FieldValue.arrayUnion(userID),
+    var newLikes = this.state.likes;
+    newLikes.push(userID);
+
+    this.setState({
+      ...this.state,
+      likes: newLikes,
     });
   }
 
   unlikePost() {
     const firestore = firebase.firestore();
     const postID = this.props.post.postID;
-    const userID = this.props.post.userID;
-    const post = firestore.collection("posts").doc(postID);
+    const userID = this.props.userID;
+    // const post = firestore.collection("posts").doc(postID);
+    // // TODO: Update post-likes collection
+    // post.update({
+    //   likes: firebase.firestore.FieldValue.arrayRemove(userID),
+    // });
 
-    post.update({
-      likes: firebase.firestore.FieldValue.arrayRemove(userID),
+    var newLikes = this.state.likes;
+    newLikes.remove(userID);
+
+    this.setState({
+      ...this.state,
+      likes: newLikes,
     });
   }
 
@@ -94,18 +116,15 @@ class Post extends Component {
           title={"View Recipe"}
           color="#841584"
         ></Button>
-        <Button
-          onPress={() => {
-            this.likePost();
-          }}
-          title={"Like Post"}
-        ></Button>
-        <Button
-          onPress={() => {
-            this.unlikePost();
-          }}
-          title={"Unlike Post"}
-        ></Button>
+        {this.state.likes.includes(this.props.userID) ? (
+          <TouchableOpacity onPress={() => this.unlikePost()}>
+            <AntDesign name="heart" size={24} color="red" />
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity onPress={() => this.likePost()}>
+            <AntDesign name="hearto" size={24} color="red" />
+          </TouchableOpacity>
+        )}
         {!this.state.imageLoaded ? <LoadingView /> : <View></View>}
         <Image
           source={{
