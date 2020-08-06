@@ -154,7 +154,10 @@ class Post extends Component {
         />
         <View style={styles.buttonContainer}>
           <TouchableOpacity
-            style={styles.button}
+            style={[
+              styles.button,
+              { backgroundColor: "orange", padding: 7, borderRadius: 5 },
+            ]}
             onPress={() => {
               this.props.setViewingRecipe(this.props.post.recipeID);
               this.props.setViewingRecipeStep(1);
@@ -162,7 +165,7 @@ class Post extends Component {
               this.props.setTabsShowing(false);
             }}
           >
-            <Entypo name="open-book" size={24} color="orange" />
+            <Text style={{}}>Cook</Text>
           </TouchableOpacity>
           {this.state.likes.includes(this.props.userID) ? (
             <TouchableOpacity
