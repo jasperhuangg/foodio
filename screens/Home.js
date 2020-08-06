@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, SafeAreaView } from "react-native";
+import { StyleSheet, Text, SafeAreaView, View } from "react-native";
 import * as firebase from "firebase";
 
 export default (props) => {
@@ -18,7 +18,7 @@ export default (props) => {
           console.log(document.data());
           postArr.push(document.data());
         });
-        this.setPosts(postArr);
+        setPosts(postArr);
       });
   }, []);
 
@@ -30,7 +30,13 @@ export default (props) => {
         alignItems: "center",
       }}
     >
-      <Text>Home!</Text>
+      {posts.map((post) => {
+        return (
+          <View>
+            <Text>{post.recipeID}</Text>
+          </View>
+        );
+      })}
     </SafeAreaView>
   );
 };
