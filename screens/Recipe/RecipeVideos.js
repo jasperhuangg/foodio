@@ -45,6 +45,9 @@ function RecipeVideos(props) {
   const [currentStep, setCurrentStep] = useState(props.viewingRecipeStep);
   const [recipe, setRecipe] = useState({});
   const [loaded, setLoaded] = useState(false);
+  // const [offset, setOffset] = useState(0);
+
+  var offset = 0;
 
   useEffect(() => {
     // get the current recipe from firestore
@@ -69,13 +72,24 @@ function RecipeVideos(props) {
     return (
       <SafeAreaView>
         <ScrollView
+          onScroll={function (event) {
+            var currentOffset = event.nativeEvent.contentOffset.x;
+
+            var direction = currentOffset > offset ? "right" : "left";
+            offset = currentOffset;
+            if (direction === "right") {
+              props.setViewingRecipeStep(props.viewingRecipeStep - 1);
+            } else {
+              props.setViewingRecipeStep(props.viewingRecipeStep + 1);
+            }
+          }}
           contentOffset={{
             x: (props.viewingRecipeStep - 1) * window.width,
             y: 0,
           }}
           pagingEnabled
           horizontal
-          showsHorizontalScrollIndicator={true}
+          showsHorizontalScrollIndicator={false}
           scrollEventThrottle={200}
           decelerationRate="fast"
           contentContainerStyle={{
@@ -83,13 +97,13 @@ function RecipeVideos(props) {
           }}
         >
           {recipe.steps.map((step, index) => {
-            console.log(index);
             return (
               <RecipeStepVideo
                 navigation={props.navigation}
                 key={index}
                 step={step}
                 stepNum={index + 1}
+                viewingRecipeStep={props.viewingRecipeStep}
               />
             );
           })}

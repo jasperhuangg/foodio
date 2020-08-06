@@ -53,6 +53,8 @@ function Home(props) {
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
+    setTabsShowing(true);
+
     // get all posts from firestore by timestamp
     firebase
       .firestore()

@@ -69,6 +69,7 @@ function Main(props) {
         name="Home"
         component={HomeStack}
         options={{ title: "Feed" }}
+        options={{ tabBarVisible: props.tabsShowing }}
       />
       <Tab.Screen
         name="Create"

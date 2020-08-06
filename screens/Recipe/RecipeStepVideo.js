@@ -9,34 +9,11 @@ import {
 import { Video } from "expo-av";
 
 const window = Dimensions.get("window");
+const screen = Dimensions.get("screen");
 
 export default (props) => {
   return (
     <View style={styles.container}>
-      <View
-        style={{
-          height: 40,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          marginTop: 10,
-          marginBottom: 10,
-          zIndex: 5,
-        }}
-      >
-        <Text
-          style={{
-            fontWeight: "700",
-            fontSize: 35,
-            color: "white",
-            textShadowColor: "orange",
-            textShadowOffset: { width: -2, height: 2 },
-            textShadowRadius: 0,
-          }}
-        >
-          {"Step " + props.stepNum}
-        </Text>
-      </View>
       <TouchableOpacity
         style={{
           position: "static",
@@ -56,30 +33,82 @@ export default (props) => {
           props.navigation.goBack();
         }}
       >
-        <Text
+        <View
           style={{
-            fontSize: 20,
-            color: "white",
-            fontWeight: "700",
-            letterSpacing: 2,
-            textShadowColor: "orange",
-            textShadowOffset: { width: -2, height: 2 },
-            textShadowRadius: 0,
+            borderRadius: 7,
+            padding: 10,
+            backgroundColor: "rgba(255, 255, 255, 0.4)",
           }}
         >
-          BACK
-        </Text>
+          <Text
+            style={{
+              fontSize: 20,
+              color: "black",
+              fontWeight: "700",
+              letterSpacing: 2,
+              textShadowColor: "lightgrey",
+              textShadowOffset: { width: -2, height: 2 },
+              textShadowRadius: 0,
+            }}
+          >
+            BACK TO RECIPE
+          </Text>
+        </View>
       </TouchableOpacity>
+      <View
+        style={{
+          height: screen.height * 0.3,
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "flex-start",
+          justifyContent: "flex-start",
+          marginTop: screen.height * 0.7,
+          marginBottom: 10,
+          zIndex: 5,
+          backgroundColor: "rgba(255, 255, 255, 0.4)",
+        }}
+      >
+        <Text
+          style={{
+            fontWeight: "700",
+            fontSize: 50,
+            marginLeft: 25,
+            color: "black",
+            textShadowColor: "lightgrey",
+            textShadowOffset: { width: -2, height: 2 },
+            textShadowRadius: 0,
+            width: 50,
+          }}
+        >
+          {props.stepNum}
+        </Text>
+        <Text
+          style={{
+            fontWeight: "700",
+            fontSize: 30,
+            marginLeft: 25,
+            marginTop: 10,
+            color: "black",
+            textShadowColor: "lightgrey",
+            textShadowOffset: { width: -2, height: 2 },
+            textShadowRadius: 0,
+            width: window.width - 70,
+          }}
+        >
+          {props.step.title}
+        </Text>
+      </View>
+
       <Video
         source={{ uri: props.step.videoUrl }} // Can be a URL or a local file.
-        volume={0.0}
+        volume={1}
         isMuted={true}
         resizeMode="cover"
         shouldPlay
         isLooping
         style={{
           width: window.width,
-          height: window.height - 30,
+          height: screen.height - 30,
           zIndex: 0,
           position: "absolute",
           // top: 30,
@@ -95,7 +124,7 @@ export default (props) => {
 const styles = StyleSheet.create({
   container: {
     width: window.width,
-    height: window.height,
+    height: screen.height,
   },
   video: {
     position: "absolute",
