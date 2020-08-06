@@ -87,7 +87,7 @@ class Profile extends Component {
   }
 
   render() {
-    console.log(this.state.posts)
+    console.log(this.state.posts);
     if (this.state.loaded)
       return (
         <SafeAreaView
@@ -99,11 +99,9 @@ class Profile extends Component {
         >
           <Text>{this.state.username}</Text>
 
-          <FlatList>
-            {this.state.posts.map((post) => (
-              <Post key={post.recipeID} recipeID={post.recipeID} />
-            ))}
-          </FlatList>
+          {this.state.posts.map((post) => (
+            <Post key={post.recipeID} recipeID={post.recipeID} />
+          ))}
         </SafeAreaView>
       );
     else

@@ -9,7 +9,6 @@ export default class Post extends Component {
   }
 
   render() {
-      alert(this.props.recipeID);
     return (
       <SafeAreaView>
         <Image
