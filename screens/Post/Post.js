@@ -57,6 +57,7 @@ class Post extends Component {
     super(props);
     this.state = {
       imageLoaded: false,
+      commentsDisplaying: false,
     };
   }
 
@@ -178,26 +179,34 @@ class Post extends Component {
               <FontAwesome name="bookmark-o" size={24} color="black" />
             </TouchableOpacity>
           )}
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => {
+              this.setState({
+                commentsDisplaying: !this.state.commentsDisplaying,
+              });
+            }}
+          >
             <FontAwesome5 name="comment" size={24} color="grey" />
           </TouchableOpacity>
         </View>
-        <View>
-          <ScrollView
-            style={{
-              padding: 10,
-            }}
-          >
-            {this.props.post.comments.map((comment, index) => (
-              <View key={index}>
-                <Text style={{ fontSize: 18 }}>{comment.content}</Text>
-                <Text style={{ fontSize: 14 }}>
-                  {comment.postedBy} · {getFormattedDate(comment.timestamp)}
-                </Text>
-              </View>
-            ))}
-          </ScrollView>
-        </View>
+
+        <SafeAreaView
+          style={{
+            padding: 20,
+            width: window.width - 20,
+            display: this.state.commentsDisplaying ? "flex" : "none",
+          }}
+        >
+          {this.props.post.comments.map((comment, index) => (
+            <View key={index}>
+              <Text style={{ fontSize: 18 }}>{comment.content}</Text>
+              <Text style={{ fontSize: 14 }}>
+                {comment.postedBy} · {getFormattedDate(comment.timestamp)}
+              </Text>
+            </View>
+          ))}
+        </SafeAreaView>
       </View>
     );
   }
