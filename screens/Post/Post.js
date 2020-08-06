@@ -150,7 +150,10 @@ class Post extends Component {
         />
         <View style={styles.buttonContainer}>
           <TouchableOpacity
-            style={styles.button}
+            style={[
+              styles.button,
+              { backgroundColor: "orange", padding: 7, borderRadius: 5 },
+            ]}
             onPress={() => {
               this.props.setViewingRecipe(this.props.post.recipeID);
               this.props.setViewingRecipeStep(1);
@@ -158,7 +161,7 @@ class Post extends Component {
               this.props.setTabsShowing(false);
             }}
           >
-            <Entypo name="open-book" size={24} color="orange" />
+            <Text style={{}}>Cook</Text>
           </TouchableOpacity>
           {this.state.likes.includes(this.props.userID) ? (
             <TouchableOpacity
@@ -196,8 +199,10 @@ class Post extends Component {
         >
           {this.props.post.comments.map((comment, index) => (
             <View key={index} style={{ paddingTop: 7, paddingBottom: 7 }}>
-              <Text style={{ fontSize: 18 }}>{comment.content}</Text>
-              <Text style={{ fontSize: 14, color: "grey" }}>
+              <Text style={{ fontSize: 18, marginLeft: 20 }}>
+                {comment.content}
+              </Text>
+              <Text style={{ fontSize: 14, color: "grey", marginLeft: 20 }}>
                 {comment.postedBy} · {getFormattedDate(comment.timestamp)}
               </Text>
             </View>
