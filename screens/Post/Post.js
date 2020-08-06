@@ -8,6 +8,7 @@ import {
   Image,
   Button,
   ActivityIndicator,
+  Platform,
 } from "react-native";
 import { connect } from "react-redux";
 import {
@@ -112,12 +113,11 @@ class Post extends Component {
             uri: this.props.post.imageUrl,
           }}
           style={{
-            height: this.state.imageLoaded ? 400 : 0,
-            width: this.state.imageLoaded ? 400 : 0,
+            height: 400,
+            width: 400,
             resizeMode: "cover",
           }}
           onLoad={(e) => {
-            alert("loaded");
             this.setState({ imageLoaded: true });
           }}
         />
@@ -135,6 +135,8 @@ function LoadingView(props) {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
+        position: "absolute",
+        backgroundColor: "#f0f0f0",
       }}
     >
       <ActivityIndicator size="small" color="grey" />
