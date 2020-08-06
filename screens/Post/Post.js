@@ -23,6 +23,7 @@ import {
 import { Entypo } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
+import { ScrollView } from "react-native-gesture-handler";
 
 const mapStateToProps = (state) => {
   return {
@@ -180,6 +181,22 @@ class Post extends Component {
           <TouchableOpacity style={styles.button}>
             <FontAwesome5 name="comment" size={24} color="grey" />
           </TouchableOpacity>
+        </View>
+        <View>
+          <ScrollView
+            style={{
+              padding: 10,
+            }}
+          >
+            {this.props.post.comments.map((comment) => (
+              <React.Fragment>
+                <Text style={{ fontSize: 18 }}>{comment.content}</Text>
+                <Text style={{ fontSize: 14 }}>
+                  {comment.postedBy} · {getFormattedDate(comment.timestamp)}
+                </Text>
+              </React.Fragment>
+            ))}
+          </ScrollView>
         </View>
       </View>
     );
