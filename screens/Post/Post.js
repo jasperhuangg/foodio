@@ -21,7 +21,7 @@ import {
 } from "../../util/app-redux";
 
 import { Entypo } from "@expo/vector-icons";
-import { AntDesign } from "@expo/vector-icons";
+import { FontAwesome } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { ScrollView } from "react-native-gesture-handler";
 
@@ -168,14 +168,14 @@ class Post extends Component {
               style={styles.button}
               onPress={() => this.unlikePost()}
             >
-              <AntDesign name="heart" size={24} color="rgb(218, 56, 73)" />
+              <FontAwesome name="bookmark" size={24} color="black" />
             </TouchableOpacity>
           ) : (
             <TouchableOpacity
               style={styles.button}
               onPress={() => this.likePost()}
             >
-              <AntDesign name="hearto" size={24} color="rgb(218, 56, 73)" />
+              <FontAwesome name="bookmark-o" size={24} color="black" />
             </TouchableOpacity>
           )}
           <TouchableOpacity style={styles.button}>
