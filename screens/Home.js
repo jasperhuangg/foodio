@@ -62,8 +62,19 @@ function Home(props) {
       .onSnapshot((snapshot) => {
         let postArr = [];
         snapshot.forEach((document) => {
-          console.log(document.data());
-          postArr.push(document.data());
+          postArr.push(
+            {
+              postID: document.id,
+              comments: document.get("comments"),
+              likes: document.get("likes"),
+              recipeID: document.get("recipeID"),
+              recipeName: document.get("recipeName"),
+              imageUrl: document.get("imageUrl"),
+              postedBy: document.get("postedBy"),
+              timestamp: document.get("timestamp"),
+            }
+            // post.data()
+          );
         });
         setPosts(postArr);
         setLoaded(true);
