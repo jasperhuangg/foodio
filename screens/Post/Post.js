@@ -19,7 +19,10 @@ import {
   setViewingRecipe,
   setViewingRecipeStep,
 } from "../../util/app-redux";
+
 import { Entypo } from "@expo/vector-icons";
+import { AntDesign } from "@expo/vector-icons";
+import { FontAwesome5 } from "@expo/vector-icons";
 
 const mapStateToProps = (state) => {
   return {
@@ -56,25 +59,45 @@ class Post extends Component {
     };
   }
 
+  static getDerivedStateFromProps(props, state) {
+    return { likes: props.post.likes };
+  }
+
   likePost() {
     const firestore = firebase.firestore();
     const postID = this.props.post.postID;
-    const userID = this.props.post.userID;
-    const post = firestore.collection("posts").doc(postID);
+    const userID = this.props.userID;
+    // const post = firestore.collection("posts").doc(postID);
+    // // TODO: Update post-likes collection
+    // post.update({
+    //   likes: firebase.firestore.FieldValue.arrayUnion(userID),
+    // });
 
-    post.update({
-      likes: firebase.firestore.FieldValue.arrayUnion(userID),
+    var newLikes = this.state.likes;
+    newLikes.push(userID);
+
+    this.setState({
+      ...this.state,
+      likes: newLikes,
     });
   }
 
   unlikePost() {
     const firestore = firebase.firestore();
     const postID = this.props.post.postID;
-    const userID = this.props.post.userID;
-    const post = firestore.collection("posts").doc(postID);
+    const userID = this.props.userID;
+    // const post = firestore.collection("posts").doc(postID);
+    // // TODO: Update post-likes collection
+    // post.update({
+    //   likes: firebase.firestore.FieldValue.arrayRemove(userID),
+    // });
 
-    post.update({
-      likes: firebase.firestore.FieldValue.arrayRemove(userID),
+    var newLikes = this.state.likes;
+    newLikes.remove(userID);
+
+    this.setState({
+      ...this.state,
+      likes: newLikes,
     });
   }
 
@@ -90,9 +113,11 @@ class Post extends Component {
           borderBottomColor: "lightgrey",
         }}
       >
-        <View>
-          <Text style={styles.header}>{this.props.post.recipeName}</Text>
-        </View>
+        <Text style={styles.header}>{this.props.post.recipeName}</Text>
+        <Text style={styles.subheader}>{this.props.post.postedBy}</Text>
+        <Text style={styles.subheader}>
+          {getFormattedDate(this.props.post.timestamp)}
+        </Text>
 
         {!this.state.imageLoaded ? <LoadingView /> : <View></View>}
         <Image
@@ -121,6 +146,24 @@ class Post extends Component {
           >
             <Entypo name="open-book" size={24} color="orange" />
           </TouchableOpacity>
+          {this.state.likes.includes(this.props.userID) ? (
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => this.unlikePost()}
+            >
+              <AntDesign name="heart" size={24} color="rgb(218, 56, 73)" />
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => this.likePost()}
+            >
+              <AntDesign name="hearto" size={24} color="rgb(218, 56, 73)" />
+            </TouchableOpacity>
+          )}
+          <TouchableOpacity style={styles.button}>
+            <FontAwesome5 name="comment" size={24} color="grey" />
+          </TouchableOpacity>
         </View>
       </View>
     );
@@ -137,7 +180,7 @@ function LoadingView(props) {
         justifyContent: "center",
         alignItems: "center",
         position: "absolute",
-        top: 50,
+        top: 100,
         backgroundColor: "#f0f0f0",
       }}
     >
@@ -153,14 +196,17 @@ const styles = {
     justifyContent: "center",
   },
   header: {
-    fontWeight: "700",
+    fontWeight: "900",
     fontSize: 27,
     width: window.width - 20,
     marginBottom: 10,
   },
   subheader: {
-    fontWeight: "700",
-    fontSize: 23,
+    fontWeight: "500",
+    fontSize: 16,
+    color: "grey",
+    width: window.width - 20,
+    marginBottom: 10,
   },
   buttonContainer: {
     display: "flex",
@@ -175,5 +221,30 @@ const styles = {
     marginRight: 20,
   },
 };
+
+function getFormattedDate(timestamp) {
+  console.log(timestamp);
+  var date = new Date(timestamp.seconds * 1000);
+
+  const months = [
+    "",
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+
+  return (
+    months[date.getMonth()] + " " + date.getDate() + ", " + date.getFullYear()
+  );
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(Post);
