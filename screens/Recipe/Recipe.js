@@ -83,7 +83,7 @@ function Recipe(props) {
             <Text style={{ fontWeight: "700" }}>{recipe.minutes} min</Text>
           </View>
           <Text style={[{ marginBottom: 20 }, styles.lineHeight]}>
-            recipe description (from the post). bla bla bla, bla bla bla, bla
+            {/* recipe description (from the post). bla bla bla, bla bla bla, bla
             bla bla,bla bla bla,bla bla bla,bla bla bla,bla bla bla,bla bla bla,
             bla bla bla,bla bla bla, bla bla bla,bla bla bla, bla bla bla, bla
             bla bla, bla bla bla, bla bla bla, bla bla bla, bla bla bla, bla bla
@@ -91,7 +91,8 @@ function Recipe(props) {
             bla bla, bla bla bla,bla bla bla, bla bla bla,bla bla bla, bla bla
             bla, bla bla bla, bla bla bla, bla bla bla, bla bla bla, bla bla
             bla, bla bla bla, bla bla bla,bla bla bla,bla bla bla,bla bla
-            bla,bla bla bla,bla bla bla,
+            bla,bla bla bla,bla bla bla, */}
+            {recipe.description}
           </Text>
         </View>
         <View
