@@ -188,13 +188,13 @@ class Post extends Component {
               padding: 10,
             }}
           >
-            {this.props.post.comments.map((comment) => (
-              <React.Fragment>
+            {this.props.post.comments.map((comment, index) => (
+              <View key={index}>
                 <Text style={{ fontSize: 18 }}>{comment.content}</Text>
                 <Text style={{ fontSize: 14 }}>
                   {comment.postedBy} · {getFormattedDate(comment.timestamp)}
                 </Text>
-              </React.Fragment>
+              </View>
             ))}
           </ScrollView>
         </View>
